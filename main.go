@@ -5,17 +5,6 @@ import (
 	"os"
 )
 
-func jouer() {
-	fmt.Println("jouer")
-}
-
-func reprendre() {
-	fmt.Println("reprendre")
-}
-func score() {
-	fmt.Println("score")
-}
-
 func main() {
 	if (len(os.Args) != 2) {
 		fmt.Println("Veuillez entrer une commande valide : jouer / reprendre / score")
