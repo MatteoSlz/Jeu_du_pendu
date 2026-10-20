@@ -8,10 +8,5 @@ func (p *Sauvegarde) Start() {
 	fmt.Scan(&Pseudo)
 	fmt.Printf("Vous vous appelez %s", Pseudo)
 
-	player := Sauvegarde{
-	Pseudo:  Pseudo,
-	Mot:     "",
-	Lettres: []string{},
-	Essais:  10,
-	}
 }
+

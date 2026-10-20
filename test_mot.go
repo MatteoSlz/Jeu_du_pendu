@@ -15,7 +15,7 @@ func ecrire() {
 	var tableau []string
 	mot := ""
 	for _, s := range contenu_string {
-		if s != ' ' && s != '\n' && s != '\t' {
+		if  s != '\n' {
 			mot = mot + string(s)
 		} else {
 			if mot != "" {
@@ -27,6 +27,31 @@ func ecrire() {
 	if mot != "" {
 		tableau = append(tableau, mot)
 	}
+
+
+	for i := 0 ; i<len(tableau);i++{
+		for j := 0; j < len(tableau[i]);j++{
+			if tableau[i][j] == 0 {
+				tableau[i] = ""
+			}
+		}
+	}
+
+
+
+
+for i := 0 ; i< len(tableau);i++{
+fmt.Printf("\n%s",tableau[i])
+}
+	for i := 0 ; i<len(tableau);i++{
+		if tableau[i] == "table"{
+			tableau[i] = ""
+		}
+
+	}
+
+
+
 	nouveau_texte := ""
 	for i, m := range tableau {
 		if i > 0 {
