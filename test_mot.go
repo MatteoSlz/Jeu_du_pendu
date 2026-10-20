@@ -30,7 +30,7 @@ func ecrire() {
 	nouveau_texte := ""
 	for i, m := range tableau {
 		if i > 0 {
-			nouveau_texte += " "
+			nouveau_texte += ""
 		}
 		nouveau_texte += m
 	}
