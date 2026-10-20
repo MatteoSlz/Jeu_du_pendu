@@ -11,6 +11,7 @@ type  Sauvegarde struct {
 	Essais int `json:"essais"`
 }
 
-func reprendre() {
+func (p *Sauvegarde)reprendre() {
 	fmt.Println("reprendre")
 }
+
