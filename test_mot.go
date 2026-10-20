@@ -32,6 +32,6 @@ func decoupage(contenu_byte []byte) []string {
 }
 
 func Verification(contenu []string) {
-	decoupage()
+	
 
 }
