@@ -1,8 +1,9 @@
-package main 
+package main
 
-import ("os"
-		"fmt"
-	)
+import (
+	"fmt"
+	"os"
+)
 
 func ecrire() {
 	texte := "mot.txt"
@@ -14,8 +15,9 @@ func ecrire() {
 	contenu_string := string(contenu_byte)
 	var tableau []string
 	mot := ""
+
 	for _, s := range contenu_string {
-		if  s != '\n' {
+		if s != '\n' && s != '\t' && s != ' ' {
 			mot = mot + string(s)
 		} else {
 			if mot != "" {
@@ -23,49 +25,35 @@ func ecrire() {
 				mot = ""
 			}
 		}
-	}
-	if mot != "" {
-		tableau = append(tableau, mot)
-	}
 
+		if mot != "" {
+			tableau = append(tableau, mot)
+		}
 
-	for i := 0 ; i<len(tableau);i++{
-		for j := 0; j < len(tableau[i]);j++{
-			if tableau[i][j] == 0 {
-				tableau[i] = ""
+		for i := 0; i < len(tableau); i++ {
+			for j := 0; j < i; j++ {
+				if !('a' >= j && j <= 'z') {
+					tableau = append(tableau, tableau[:i]...)
+				}
 			}
 		}
-	}
 
-	}
-
-
-for i := 0 ; i< len(tableau);i++{
-fmt.Printf("\n%s",tableau[i])
-}
-	for i := 0 ; i<len(tableau);i++{
-		if tableau[i] == "table"{
-			tableau[i] = ""
+		nouveau_texte := ""
+		for i, m := range tableau {
+			if i > 0 {
+				nouveau_texte += ""
+			}
+			nouveau_texte += m
 		}
 
-	}
-
-
-
-	nouveau_texte := ""
-	for i, m := range tableau {
-		if i > 0 {
-			nouveau_texte += ""
+		nouveau_contenu := []byte(nouveau_texte)
+		err = os.WriteFile("mot_correct.txt", nouveau_contenu, 0644)
+		if err != nil {
+			fmt.Println("", err)
+			return
 		}
-		nouveau_texte += m
-	}
-	nouveau_contenu := []byte(nouveau_texte)
-	err = os.WriteFile("mot_correct.txt", nouveau_contenu, 0644)
-	if err != nil {
-		fmt.Println("", err)
-		return
-	}
 
-	fmt.Println("ok")
-	
+		fmt.Println("ok")
+
+	}
 }
