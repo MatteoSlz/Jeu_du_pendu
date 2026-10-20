@@ -41,4 +41,5 @@ func ecrire() {
 		return
 	}
 	fmt.Println("ok")
+	
 }
