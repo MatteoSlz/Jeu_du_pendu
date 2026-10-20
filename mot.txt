@@ -1,5 +1,4 @@
 test
 ordinateur
 table
-b0njour
-changer bonjour
+changer
