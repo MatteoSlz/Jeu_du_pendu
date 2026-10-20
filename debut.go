@@ -7,7 +7,4 @@ func (p *Sauvegarde) Start() {
 	fmt.Println("Comment vous appelez vous ?")
 	fmt.Scan(&Pseudo)
 	fmt.Printf("Vous vous appelez %s", Pseudo)
-	var player = Sauvegarde{
-		
-	}
 }
