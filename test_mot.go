@@ -1,37 +1,44 @@
-package main
+package main 
 
-import (
-	"os"
-)
+import ("os"
+		"fmt"
+	)
 
-func Entree() ([]byte, error) {
-	contenu, err := os.ReadFile("./mot.txt")
+func ecrire() {
+	texte := "mot.txt"
+	contenu_byte, err := os.ReadFile(texte)
 	if err != nil {
-		return nil, err
+		fmt.Println("", err)
+		return
 	}
-	return contenu, nil
-}
-
-func decoupage(contenu_byte []byte) []string {
-	var mots []string // la liste des mots terminés
-	var mot []byte    // le mot en cours de construction
-
-	for _, r := range contenu_byte {
-		if r == '\n' {
-			mots = append(mots, string(mot) )
-			mot = nil
+	contenu_string := string(contenu_byte)
+	var tableau []string
+	mot := ""
+	for _, s := range contenu_string {
+		if s != ' ' && s != '\n' && s != '\t' {
+			mot = mot + string(s)
 		} else {
-			mot = append(mot, r)
+			if mot != "" {
+				tableau = append(tableau, mot)
+				mot = ""
+			}
 		}
 	}
-		if len(mot) > 0 {
-		mots = append(mots, string(mot))
+	if mot != "" {
+		tableau = append(tableau, mot)
+	}
+	nouveau_texte := ""
+	for i, m := range tableau {
+		if i > 0 {
+			nouveau_texte += " "
 		}
-
-	return mots
-}
-
-func Verification(contenu []string) {
-	
-
+		nouveau_texte += m
+	}
+	nouveau_contenu := []byte(nouveau_texte)
+	err = os.WriteFile("mot_correct.txt", nouveau_contenu, 0644)
+	if err != nil {
+		fmt.Println("", err)
+		return
+	}
+	fmt.Println("ok")
 }

@@ -4,6 +4,6 @@ import (
 	"fmt"
 )
 
-func score() {
+func (p *Sauvegarde) score() {
 	fmt.Println("score")
 }

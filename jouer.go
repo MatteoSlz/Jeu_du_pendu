@@ -4,6 +4,6 @@ import (
 	"fmt"
 )
 
-func jouer() {
+func (p *Sauvegarde) jouer() {
 	fmt.Println("jouer")
 }

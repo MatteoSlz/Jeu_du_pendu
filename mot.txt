@@ -2,7 +2,7 @@ pendu
 clavier
 ordinateur
 porte-monnaie
- Fichier
+    Fichier
 b0njour
 éléphant
 
