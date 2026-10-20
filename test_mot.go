@@ -37,7 +37,7 @@ func ecrire() {
 		}
 	}
 
-
+	}
 
 
 for i := 0 ; i< len(tableau);i++{
@@ -65,6 +65,7 @@ fmt.Printf("\n%s",tableau[i])
 		fmt.Println("", err)
 		return
 	}
+
 	fmt.Println("ok")
 	
 }
