@@ -24,7 +24,6 @@ func ecrire() {
 				mot = ""
 			}
 		}
-
 	if mot != "" {
 		tableau = append(tableau, mot)
 	}
