@@ -14,43 +14,28 @@ func ecrire() {
 	contenu_string := string(contenu_byte)
 	var tableau []string
 	mot := ""
+	
 	for _, s := range contenu_string {
-		if  s != '\n' {
+		if  (s != '\n' || s != '\t'){
 			mot = mot + string(s)
-		} else {
+		}else{
 			if mot != "" {
 				tableau = append(tableau, mot)
 				mot = ""
 			}
 		}
-	}
+
 	if mot != "" {
 		tableau = append(tableau, mot)
 	}
 
-
-	for i := 0 ; i<len(tableau);i++{
-		for j := 0; j < len(tableau[i]);j++{
-			if tableau[i][j] == 0 {
-				tableau[i] = ""
+	for i := 0; i < len(tableau); i++ {
+		for j := 0; j < i; j++{
+			if !('a' >= j && j <= 'z') {
+				tableau = append(tableau, tableau[:i]...)				
 			}
 		}
 	}
-
-
-
-
-for i := 0 ; i< len(tableau);i++{
-fmt.Printf("\n%s",tableau[i])
-}
-	for i := 0 ; i<len(tableau);i++{
-		if tableau[i] == "table"{
-			tableau[i] = ""
-		}
-
-	}
-
-
 
 	nouveau_texte := ""
 	for i, m := range tableau {
@@ -59,11 +44,14 @@ fmt.Printf("\n%s",tableau[i])
 		}
 		nouveau_texte += m
 	}
+
 	nouveau_contenu := []byte(nouveau_texte)
 	err = os.WriteFile("mot_correct.txt", nouveau_contenu, 0644)
 	if err != nil {
 		fmt.Println("", err)
 		return
 	}
+
 	fmt.Println("ok")
+}
 }
