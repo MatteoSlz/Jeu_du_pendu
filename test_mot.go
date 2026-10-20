@@ -24,7 +24,6 @@ func ecrire() {
 				mot = ""
 			}
 		}
-	}
 
 	if mot != "" {
 		tableau = append(tableau, mot)
@@ -54,4 +53,5 @@ func ecrire() {
 	}
 
 	fmt.Println("ok")
+}
 }
