@@ -8,3 +8,4 @@ func (p *Sauvegarde) Start() {
 	fmt.Scan(&Pseudo)
 	fmt.Printf("Vous vous appelez %s", Pseudo)
 }
+

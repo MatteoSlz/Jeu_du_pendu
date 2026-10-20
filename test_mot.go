@@ -16,7 +16,7 @@ func ecrire() {
 	mot := ""
 	
 	for _, s := range contenu_string {
-		if s != ' ' && s != '\n' && s != '\t' {
+		if  (s != '\n' || s != '\t'){
 			mot = mot + string(s)
 		}else{
 			if mot != "" {
@@ -32,12 +32,10 @@ func ecrire() {
 
 	for i := 0; i < len(tableau); i++ {
 		for j := 0; j < i; j++{
-			if ((j >= 0 && j <= 9) || j == ' ' || j == "" ) {
+			if !('a' >= j && j <= 'z') {
 				tableau = append(tableau, tableau[:i]...)				
 			}
-			
 		}
-	
 	}
 
 	nouveau_texte := ""
