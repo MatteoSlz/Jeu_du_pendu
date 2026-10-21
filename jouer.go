@@ -98,7 +98,14 @@ func jouer() {
 		if lettre_donnee_debut == tableau_mot[i].Lettre {
 			tableau_mot[i].Lettre_trouve = true
 		}
-	} 
+	}
+	for j := 0 ; j<len(alphabet);j++{
+				if lettre_donnee_debut == alphabet[j].Lettre{
+					alphabet[j].Lettre_trouve = true 
+				}
+			} 
+
+
 	for defaite {
 		count_bonne_lettre = 0
 		for i := 0; i < len(mot_a_trouver); i++ {
@@ -122,29 +129,56 @@ func jouer() {
 				fmt.Printf("_ ")
 			}
 		}
+		
+		fmt.Printf("\tIl vous reste %d essai(s)",Essais_restant)
 		fmt.Println()
-		fmt.Printf("Il vous reste %d essai(s)",Essais_restant)
+		fmt.Printf("Lettres proposées : ")
+		for i:= 0;i<len(alphabet);i++ {
+			if alphabet[i].Lettre_trouve == true {
+				fmt.Printf("%s ",alphabet[i].Lettre)
+			}
+		}
 		fmt.Println()
-		fmt.Print("Que voulez-vous faire : ")
+		fmt.Println()
+		fmt.Printf("Que voulez-vous proposer : ")
 		var action string
 		fmt.Scan(&action)
 		action = strings.ToLower(action)
 		switch action {
 		case "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z":
+			lettre_deja_proposer := false 
+			for k := 0 ; k<len(alphabet);k++{
+				if (action == alphabet[k].Lettre) && (alphabet[k].Lettre_trouve){
+					lettre_deja_proposer = true 
+				}
+			}
+			if lettre_deja_proposer == false {
 			lettre_trouvee := false
 			for i := 0; i < len(mot_a_trouver); i++ {
 				if action == tableau_mot[i].Lettre {
 					tableau_mot[i].Lettre_trouve = true
 					lettre_trouvee = true
 				}
+			for j := 0 ; j<len(alphabet);j++{
+				if action == alphabet[j].Lettre{
+					alphabet[j].Lettre_trouve = true 
+				}
+			}
 			}
 			if lettre_trouvee {
 				fmt.Printf("Bravo ! Vous avez trouvé la lettre : %s.\n", action)
 			} else {
-				fmt.Printf("Dommage. La lettre '%s' n'est pas dans le mot.", action)
+				fmt.Println()
+				fmt.Printf("Dommage la lettre '%s' n'est pas dans le mot.", action)
+				fmt.Println()
 				Essais_restant -- 
 			}
+		} else {
 			fmt.Println()
+			fmt.Printf("La lettre : %s a déjà été proposé.",action)
+			fmt.Println()
+		}
+
 		case mot_a_trouver:
 			if Essais_restant >= 2 {
 			defaite = false
@@ -201,10 +235,12 @@ func jouer() {
 				}
 
 			} else if (len(mot_a_trouver) == len(action)) && (Essais_restant <2){
+				fmt.Println()
 				fmt.Println("Il ne vous reste pas assez d'essais pour effectuer cette action.")
 			fmt.Println()
 			continue
 			} else {
+			fmt.Println()
 			fmt.Println("Entrée invalide, veuillez proposer une seule lettre ou un mot de la bonne longueur.")
 			fmt.Println()
 			continue
