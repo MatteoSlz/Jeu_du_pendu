@@ -22,6 +22,35 @@ type  Sauvegarde struct {
 
 var liste_joueurs = []Sauvegarde{}
 
+var alphabet = []mots{
+	{Lettre: "a", Lettre_trouve: false},
+	{Lettre: "b", Lettre_trouve: false},
+	{Lettre: "c", Lettre_trouve: false},
+	{Lettre: "d", Lettre_trouve: false},
+	{Lettre: "e", Lettre_trouve: false},
+	{Lettre: "f", Lettre_trouve: false},
+	{Lettre: "g", Lettre_trouve: false},
+	{Lettre: "h", Lettre_trouve: false},
+	{Lettre: "i", Lettre_trouve: false},
+	{Lettre: "j", Lettre_trouve: false},
+	{Lettre: "k", Lettre_trouve: false},
+	{Lettre: "l", Lettre_trouve: false},
+	{Lettre: "m", Lettre_trouve: false},
+	{Lettre: "n", Lettre_trouve: false},
+	{Lettre: "o", Lettre_trouve: false},
+	{Lettre: "p", Lettre_trouve: false},
+	{Lettre: "q", Lettre_trouve: false},
+	{Lettre: "r", Lettre_trouve: false},
+	{Lettre: "s", Lettre_trouve: false},
+	{Lettre: "t", Lettre_trouve: false},
+	{Lettre: "u", Lettre_trouve: false},
+	{Lettre: "v", Lettre_trouve: false},
+	{Lettre: "w", Lettre_trouve: false},
+	{Lettre: "x", Lettre_trouve: false},
+	{Lettre: "y", Lettre_trouve: false},
+	{Lettre: "z", Lettre_trouve: false},
+}
+
 func Start()string{
 	var nom string
 	fmt.Println()
