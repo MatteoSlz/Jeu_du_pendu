@@ -5,6 +5,9 @@ import (
 	"os"
 	"strings"
 	"encoding/json"
+	"encoding/csv"
+	"time"
+	"strconv"
 )
 
 
@@ -209,10 +212,36 @@ perdu := false
 		}
 	}
 
+
 	if perdu {
-	fmt.Printf("Dommage c'est perdu. Le mot à trouver était : %s\n", mot_a_trouver) 
+		fmt.Printf("Dommage c'est perdu. Le mot à trouver était : %s\n", mot_a_trouver)
+		Status = "defaite"
 	} else {
-	fmt.Println()
-	fmt.Printf("Bravo! Le mot à trouver était bien : %s\n", mot_a_trouver) 
+		Status = "victoire"
+		fmt.Println()
+		fmt.Printf("Bravo! Le mot à trouver était bien : %s\n", mot_a_trouver)
+	}
+
+	alphabet_string := ""
+	for i := 0; i < len(alphabet_string); i++ {
+		if alphabet[i].Lettre_trouve {
+			alphabet_string = alphabet_string + alphabet[i].Lettre
+		}
+	}
+
+	data_csv, _ := os.OpenFile("score.csv", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	defer data_csv.Close()
+
+	texte := csv.NewWriter(data_csv)
+	defer texte.Flush()
+
+	date:= time.Now().Format("2006-01-02 15:04")
+	Essais_affiche := strconv.Itoa(Essais_restant)
+
+	nouvelle_data := []string{nom, Status, Essais_affiche, mot_a_trouver, alphabet_string, date}
+
+	erreur := texte.Write(nouvelle_data)
+	if erreur != nil {
+		fmt.Printf("Erreur sur le CSV : %v\n", erreur)
 }
 }

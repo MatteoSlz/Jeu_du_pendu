@@ -1,11 +1,14 @@
 package main
 
 import (
+	"encoding/csv"
 	"encoding/json"
 	"fmt"
 	"math/rand/v2"
 	"os"
+	"strconv"
 	"strings"
+	"time"
 )
 
 type mots struct {
@@ -52,6 +55,10 @@ var alphabet = []mots{
 	{Lettre: "z", Lettre_trouve: false},
 }
 
+var nom string
+var Status string
+var Essais_restant int
+
 func Start() string {
 
 	data, _ := os.ReadFile("save.json")
@@ -59,7 +66,6 @@ func Start() string {
 	json.Unmarshal(data, &liste_joueurs_json) //erreur a traiter
 
 	pseudo_choisis := true
-	var nom string
 	var ecrase string
 	var n_joueur int
 	saisie_valide := true
@@ -88,7 +94,7 @@ func Start() string {
 						}
 						fileErr := os.WriteFile("save.json", encodeData, 0644)
 						if fileErr != nil {
-							fmt.Printf("Erreur encodage données : %v", fileErr)	
+							fmt.Printf("Erreur encodage données : %v", fileErr)
 						}
 						pseudo_choisis = false
 						saisie_valide = false
@@ -119,7 +125,6 @@ func jouer() {
 	Essais_restant := 6
 	defaite := true
 	count_bonne_lettre := 0
-	fmt.Println("jouer")
 	liste_mot := "mot_correct.txt"
 	contenu_byte, err := os.ReadFile(liste_mot)
 	if err != nil {
@@ -305,8 +310,35 @@ func jouer() {
 
 	if perdu {
 		fmt.Printf("Dommage c'est perdu. Le mot à trouver était : %s\n", mot_a_trouver)
+		fmt.Println()
+		Status = "defaite"
 	} else {
+		Status = "victoire"
 		fmt.Println()
 		fmt.Printf("Bravo! Le mot à trouver était bien : %s\n", mot_a_trouver)
+		fmt.Println()
+	}
+
+	alphabet_string := ""
+	for i := 0; i < len(alphabet); i++ {
+		if alphabet[i].Lettre_trouve {
+			alphabet_string = alphabet_string + alphabet[i].Lettre
+		}
+	}
+
+	data_csv, _ := os.OpenFile("score.csv", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	defer data_csv.Close()
+
+	texte := csv.NewWriter(data_csv)
+	defer texte.Flush()
+
+	date := time.Now().Format("2006-01-02 15:04")
+	Essais_affiche := strconv.Itoa(Essais_restant)
+
+	nouvelle_data := []string{nom, Status, Essais_affiche, mot_a_trouver, alphabet_string, date}
+
+	erreur := texte.Write(nouvelle_data)
+	if erreur != nil {
+		fmt.Printf("Erreur sur le CSV : %v\n", erreur)
 	}
 }
