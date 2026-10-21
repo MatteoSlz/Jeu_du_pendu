@@ -20,12 +20,14 @@ type  Sauvegarde struct {
 	Essais int 	   `json:"essais"`
 	}
 
+var liste_joueurs = []Sauvegarde{}
 
 func Start()string{
 	var nom string
 	fmt.Println()
-	fmt.Println("Comment vous appelez vous ?")
+	fmt.Printf("Comment vous appelez vous : ")
 	fmt.Scan(&nom)
+	fmt.Println()
 	fmt.Printf("D'accord bienvenue %s !", nom)
 	fmt.Println()
 	return nom
@@ -123,7 +125,11 @@ func jouer() {
 			continue
 		}
 	case "!save" :
-		fmt.Println("save")
+		fmt.Println()
+		fmt.Println("Sauvegarde de votre partie en cours . . . . . . . . . . .")
+		fmt.Println()
+		fmt.Println("Sauvegarde terminée. Nous avons hâte de vous revoir!")
+		fmt.Println()
 
 	player := Sauvegarde{
 		Pseudo : s,
@@ -131,8 +137,14 @@ func jouer() {
 		Lettres : tableau_mot,
 		Essais : Essais_restant,
 	}
+	
+	data , _ := os.ReadFile("save.json")
+	var liste_joueurs_json []Sauvegarde
+   json.Unmarshal(data,&liste_joueurs_json)
 
-	encodeData, encodeErr := json.Marshal(player)
+	liste_joueurs = append(liste_joueurs_json, player )
+
+	encodeData, encodeErr := json.Marshal(liste_joueurs)
 
 	if encodeErr != nil {
 		fmt.Printf("Erreur encodage données : %v", encodeErr)

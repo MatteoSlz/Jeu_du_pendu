@@ -11,19 +11,56 @@ import (
 func reprendre() {
 
 data, _ := os.ReadFile("save.json")
-	var listscore Sauvegarde
-erreur := json.Unmarshal(data,&listscore)
-fmt.Println(erreur)
-	fmt.Println(listscore)
+	var liste_joueurs_json []Sauvegarde
+ json.Unmarshal(data,&liste_joueurs_json) //erreur a traiter
+
+var nom string
+choix_joueurs := true
+numero_joueur := -1
+
+for choix_joueurs {
+	fmt.Println()
+	fmt.Printf("Quel partie souhaite-tu reprendre : ")
+	fmt.Println()
+	for i := 0 ; i< len(liste_joueurs_json);i++{
+		fmt.Println()
+		fmt.Printf("%s",liste_joueurs_json[i].Pseudo)
+	}
+	fmt.Println()
+	fmt.Printf(": ")
+	fmt.Scan(&nom)
+	for j := 0 ; j<len(liste_joueurs_json);j++{
+		if  nom == liste_joueurs_json[j].Pseudo{
+			numero_joueur = j
+			choix_joueurs = false 
+			break
+		} 
+	}
+	if numero_joueur == -1 {
+		fmt.Println()
+		fmt.Println()
+		fmt.Println("Ce pseudo n'existe pas. Veuillez saisir un pseudo valide.")
+	}
+}
 
 perdu := false 
-	Essais_restant := listscore.Essais
-	mot_a_trouver := listscore.Mot
-	tableau_mot := listscore.Lettres
+	Essais_restant := 0
+	mot_a_trouver := ""
+	tableau_mot := []mots{}
 	defaite := true
-	s := listscore.Pseudo
+	s := ""
 	count_bonne_lettre := 0
-	fmt.Println("reprendre")
+
+	if numero_joueur < len(liste_joueurs_json){
+	fmt.Println()
+	fmt.Printf("D'accord re bonjour %s !", liste_joueurs_json[numero_joueur].Pseudo)
+	fmt.Println()
+
+	Essais_restant = liste_joueurs_json[numero_joueur].Essais
+	mot_a_trouver = liste_joueurs_json[numero_joueur].Mot
+	tableau_mot = liste_joueurs_json[numero_joueur].Lettres
+	s = liste_joueurs_json[numero_joueur].Pseudo
+	}
 
 
 	for defaite {
@@ -81,7 +118,11 @@ perdu := false
 			continue
 		}
 	case "!save" :
-		fmt.Println("save")
+		fmt.Println()
+		fmt.Println("Sauvegarde de votre partie en cours . . . . . . . . . . .")
+		fmt.Println()
+		fmt.Println("Sauvegarde terminée. Nous avons hâte de vous revoir!")
+		fmt.Println()
 
 	player := Sauvegarde{
 		Pseudo : s,
@@ -89,8 +130,14 @@ perdu := false
 		Lettres : tableau_mot,
 		Essais : Essais_restant,
 	}
+	
+	data , _ := os.ReadFile("save.json")
+	var liste_joueurs_json []Sauvegarde
+   json.Unmarshal(data,&liste_joueurs_json)
 
-	encodeData, encodeErr := json.Marshal(player)
+	liste_joueurs = append(liste_joueurs_json, player )
+
+	encodeData, encodeErr := json.Marshal(liste_joueurs)
 
 	if encodeErr != nil {
 		fmt.Printf("Erreur encodage données : %v", encodeErr)
