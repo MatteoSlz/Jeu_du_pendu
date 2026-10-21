@@ -14,8 +14,8 @@ import (
 func reprendre() {
 
 data, _ := os.ReadFile("save.json")
-	var liste_joueurs_json []Sauvegarde
- json.Unmarshal(data,&liste_joueurs_json) //erreur a traiter
+var liste_joueurs_json []Sauvegarde
+json.Unmarshal(data,&liste_joueurs_json)
 
 var nom string
 choix_joueurs := true
@@ -262,6 +262,6 @@ if joueur_trouve {
 
 	erreur := texte.Write(nouvelle_data)
 	if erreur != nil {
-		fmt.Printf("Erreur sur le CSV : %v\n", erreur)
+		fmt.Printf("%v", erreur)
 }
 }

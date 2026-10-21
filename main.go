@@ -17,6 +17,8 @@ func main() {
 		jouer()
 	case "reprendre":
 		reprendre()
+	case "score":
+		score()	
 	default:
 		fmt.Println("Erreur")
 	}
