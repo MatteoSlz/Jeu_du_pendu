@@ -223,7 +223,7 @@ perdu := false
 	}
 
 	alphabet_string := ""
-	for i := 0; i < len(alphabet_string); i++ {
+	for i := 0; i < len(alphabet); i++ {
 		if alphabet[i].Lettre_trouve {
 			alphabet_string = alphabet_string + alphabet[i].Lettre
 		}
