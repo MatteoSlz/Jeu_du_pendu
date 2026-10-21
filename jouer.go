@@ -1,25 +1,25 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"math/rand/v2"
 	"os"
 	"strings"
-	"encoding/json"
 )
 
 type mots struct {
-		Lettre        string `json:"lettre"`
-		Lettre_trouve bool	 `json:"lettre_trouve"`
-	}
+	Lettre        string `json:"lettre"`
+	Lettre_trouve bool   `json:"lettre_trouve"`
+}
 
-type  Sauvegarde struct {
-	Pseudo string  `json:"pseudo"`
-	Mot string 	   `json:"mot"`
-	Lettres []mots `json:"lettres"`
-	Essais int 	   `json:"essais"`
+type Sauvegarde struct {
+	Pseudo    string `json:"pseudo"`
+	Mot       string `json:"mot"`
+	Lettres   []mots `json:"lettres"`
+	Essais    int    `json:"essais"`
 	Alphabets []mots `json:"alphabet"`
-	}
+}
 
 var liste_joueurs = []Sauvegarde{}
 
@@ -52,20 +52,70 @@ var alphabet = []mots{
 	{Lettre: "z", Lettre_trouve: false},
 }
 
-func Start()string{
+func Start() string {
+
+	data, _ := os.ReadFile("save.json")
+	var liste_joueurs_json []Sauvegarde
+	json.Unmarshal(data, &liste_joueurs_json) //erreur a traiter
+
+	pseudo_choisis := true
 	var nom string
-	fmt.Println()
-	fmt.Printf("Comment vous appelez vous : ")
-	fmt.Scan(&nom)
-	fmt.Println()
-	fmt.Printf("D'accord bienvenue %s !", nom)
-	fmt.Println()
+	var ecrase string
+	var n_joueur int
+	saisie_valide := true
+
+	for pseudo_choisis {
+		fmt.Println()
+		fmt.Printf("Comment vous appelez vous : ")
+		fmt.Scan(&nom)
+		fmt.Println()
+		for i := 0; i < len(liste_joueurs_json); i++ {
+			if nom == liste_joueurs_json[i].Pseudo {
+				for saisie_valide {
+					n_joueur = i
+					fmt.Printf("Le pseudo %s existe déjà ", nom)
+					fmt.Println("Voulez vous écraser la sauvegarde précédente effectué sur ce pseudo ?")
+					fmt.Printf("oui/non : ")
+					fmt.Scan(&ecrase)
+					ecrase = strings.ToLower(ecrase)
+					switch ecrase {
+					case "oui":
+						liste_joueurs_json = append(liste_joueurs_json[:n_joueur], liste_joueurs_json[n_joueur+1:]...)
+						encodeData, encodeErr := json.Marshal(liste_joueurs_json)
+
+						if encodeErr != nil {
+							fmt.Printf("Erreur encodage données : %v", encodeErr)
+						}
+						fileErr := os.WriteFile("save.json", encodeData, 0644)
+						if fileErr != nil {
+							fmt.Printf("Erreur encodage données : %v", fileErr)	
+						}
+						pseudo_choisis = false
+						saisie_valide = false
+					case "non":
+						fmt.Println()
+						fmt.Println("Pas de problème. Au revoir !")
+						fmt.Println()
+						os.Exit(0)
+					default:
+						fmt.Println()
+						fmt.Println("Veuillez entrer une saisie valide.")
+						fmt.Println()
+					}
+				}
+			}
+		}
+		fmt.Println()
+		fmt.Printf("D'accord bienvenue %s !", nom)
+		pseudo_choisis = false
+		fmt.Println()
+	}
 	return nom
 }
 
-func jouer() { 
+func jouer() {
 	s := Start()
-	perdu := false 
+	perdu := false
 	Essais_restant := 6
 	defaite := true
 	count_bonne_lettre := 0
@@ -82,7 +132,7 @@ func jouer() {
 		return
 	}
 	index_mots_random := rand.IntN(len(tableau_final))
-	mot_a_trouver := strings.ToLower(tableau_final[index_mots_random]) 
+	mot_a_trouver := strings.ToLower(tableau_final[index_mots_random])
 
 	tableau_mot := make([]mots, len(mot_a_trouver))
 	for i, s := range mot_a_trouver {
@@ -100,12 +150,11 @@ func jouer() {
 			tableau_mot[i].Lettre_trouve = true
 		}
 	}
-	for j := 0 ; j<len(alphabet);j++{
-				if lettre_donnee_debut == alphabet[j].Lettre{
-					alphabet[j].Lettre_trouve = true 
-				}
-			} 
-
+	for j := 0; j < len(alphabet); j++ {
+		if lettre_donnee_debut == alphabet[j].Lettre {
+			alphabet[j].Lettre_trouve = true
+		}
+	}
 
 	for defaite {
 		count_bonne_lettre = 0
@@ -124,19 +173,19 @@ func jouer() {
 				fmt.Printf("%s ", tableau_mot[i].Lettre)
 			} else if tableau_mot[i].Lettre == "-" {
 				fmt.Printf("- ")
-				tableau_mot[i].Lettre_trouve = true 
+				tableau_mot[i].Lettre_trouve = true
 
-			}else{
+			} else {
 				fmt.Printf("_ ")
 			}
 		}
-		
-		fmt.Printf("\tIl vous reste %d essai(s)",Essais_restant)
+
+		fmt.Printf("\tIl vous reste %d essai(s)", Essais_restant)
 		fmt.Println()
 		fmt.Printf("Lettres proposées : ")
-		for i:= 0;i<len(alphabet);i++ {
+		for i := 0; i < len(alphabet); i++ {
 			if alphabet[i].Lettre_trouve == true {
-				fmt.Printf("%s ",alphabet[i].Lettre)
+				fmt.Printf("%s ", alphabet[i].Lettre)
 			}
 		}
 		fmt.Println()
@@ -147,117 +196,117 @@ func jouer() {
 		action = strings.ToLower(action)
 		switch action {
 		case "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z":
-			lettre_deja_proposer := false 
-			for k := 0 ; k<len(alphabet);k++{
-				if (action == alphabet[k].Lettre) && (alphabet[k].Lettre_trouve){
-					lettre_deja_proposer = true 
+			lettre_deja_proposer := false
+			for k := 0; k < len(alphabet); k++ {
+				if (action == alphabet[k].Lettre) && (alphabet[k].Lettre_trouve) {
+					lettre_deja_proposer = true
 				}
 			}
 			if lettre_deja_proposer == false {
-			lettre_trouvee := false
-			for i := 0; i < len(mot_a_trouver); i++ {
-				if action == tableau_mot[i].Lettre {
-					tableau_mot[i].Lettre_trouve = true
-					lettre_trouvee = true
+				lettre_trouvee := false
+				for i := 0; i < len(mot_a_trouver); i++ {
+					if action == tableau_mot[i].Lettre {
+						tableau_mot[i].Lettre_trouve = true
+						lettre_trouvee = true
+					}
+					for j := 0; j < len(alphabet); j++ {
+						if action == alphabet[j].Lettre {
+							alphabet[j].Lettre_trouve = true
+						}
+					}
 				}
-			for j := 0 ; j<len(alphabet);j++{
-				if action == alphabet[j].Lettre{
-					alphabet[j].Lettre_trouve = true 
+				if lettre_trouvee {
+					fmt.Printf("Bravo ! Vous avez trouvé la lettre : %s.\n", action)
+				} else {
+					fmt.Println()
+					fmt.Printf("Dommage la lettre '%s' n'est pas dans le mot.", action)
+					fmt.Println()
+					Essais_restant--
 				}
-			}
-			}
-			if lettre_trouvee {
-				fmt.Printf("Bravo ! Vous avez trouvé la lettre : %s.\n", action)
 			} else {
 				fmt.Println()
-				fmt.Printf("Dommage la lettre '%s' n'est pas dans le mot.", action)
+				fmt.Printf("La lettre : %s a déjà été proposé.", action)
 				fmt.Println()
-				Essais_restant -- 
 			}
-		} else {
-			fmt.Println()
-			fmt.Printf("La lettre : %s a déjà été proposé.",action)
-			fmt.Println()
-		}
 
 		case mot_a_trouver:
 			if Essais_restant >= 2 {
-			defaite = false
-		}else{
+				defaite = false
+			} else {
+				fmt.Println()
+				fmt.Println("Il ne vous reste pas assez d'essais pour effectuer cette action.")
+				continue
+			}
+		case "!save":
 			fmt.Println()
-			fmt.Println("Il ne vous reste pas assez d'essais pour effectuer cette action.")
-			continue
-		}
-	case "!save" :
-		fmt.Println()
-		fmt.Println("Sauvegarde de votre partie en cours . . . . . . . . . . .")
-		fmt.Println()
-		fmt.Println("Sauvegarde terminée. Nous avons hâte de vous revoir!")
-		fmt.Println()
+			fmt.Println("Sauvegarde de votre partie en cours . . . . . . . . . . .")
+			fmt.Println()
+			fmt.Println("Sauvegarde terminée. Nous avons hâte de vous revoir!")
+			fmt.Println()
 
-	player := Sauvegarde{
-		Pseudo : s,
-		Mot : mot_a_trouver,
-		Lettres : tableau_mot,
-		Essais : Essais_restant,
-		Alphabets: alphabet,
-	}
-	
-	data , _ := os.ReadFile("save.json")
-	var liste_joueurs_json []Sauvegarde
-   json.Unmarshal(data,&liste_joueurs_json)
+			player := Sauvegarde{
+				Pseudo:    s,
+				Mot:       mot_a_trouver,
+				Lettres:   tableau_mot,
+				Essais:    Essais_restant,
+				Alphabets: alphabet,
+			}
 
-	liste_joueurs = append(liste_joueurs_json, player )
+			data, _ := os.ReadFile("save.json")
+			var liste_joueurs_json []Sauvegarde
+			json.Unmarshal(data, &liste_joueurs_json)
 
-	encodeData, encodeErr := json.Marshal(liste_joueurs)
+			liste_joueurs = append(liste_joueurs_json, player)
 
-	if encodeErr != nil {
-		fmt.Printf("Erreur encodage données : %v", encodeErr)
-		return
-	}
-	fileErr := os.WriteFile("save.json", encodeData, 0644)
-	if fileErr != nil {
-		fmt.Printf("Erreur encodage données : %v", fileErr)
-		return
-	}
-	return
+			encodeData, encodeErr := json.Marshal(liste_joueurs)
+
+			if encodeErr != nil {
+				fmt.Printf("Erreur encodage données : %v", encodeErr)
+				return
+			}
+			fileErr := os.WriteFile("save.json", encodeData, 0644)
+			if fileErr != nil {
+				fmt.Printf("Erreur encodage données : %v", fileErr)
+				return
+			}
+			return
 		default:
-			if (len(mot_a_trouver) == len(action)) && (Essais_restant >=2){
+			if (len(mot_a_trouver) == len(action)) && (Essais_restant >= 2) {
 				valeur := 0
-				for i := 0 ; i <len(action);i++{
-					if string(action[i])>="a" && string(action[i])<="z"{
-						valeur ++
-					} 
+				for i := 0; i < len(action); i++ {
+					if string(action[i]) >= "a" && string(action[i]) <= "z" {
+						valeur++
+					}
 				}
-				if valeur == len(action){
+				if valeur == len(action) {
 					fmt.Println()
 					fmt.Println("Le mot n'est pas bon, vous perdez 2 essais.")
 					fmt.Println()
 					Essais_restant -= 2
 				}
 
-			} else if (len(mot_a_trouver) == len(action)) && (Essais_restant <2){
+			} else if (len(mot_a_trouver) == len(action)) && (Essais_restant < 2) {
 				fmt.Println()
 				fmt.Println("Il ne vous reste pas assez d'essais pour effectuer cette action.")
-			fmt.Println()
-			continue
+				fmt.Println()
+				continue
 			} else {
-			fmt.Println()
-			fmt.Println("Entrée invalide, veuillez proposer une seule lettre ou un mot de la bonne longueur.")
-			fmt.Println()
-			continue
+				fmt.Println()
+				fmt.Println("Entrée invalide, veuillez proposer une seule lettre ou un mot de la bonne longueur.")
+				fmt.Println()
+				continue
 			}
 		}
 		if Essais_restant == 0 {
 			perdu = true
-			defaite = false 
+			defaite = false
 		}
 	}
 
 	if perdu {
-	fmt.Printf("Dommage c'est perdu. Le mot à trouver était : %s\n", mot_a_trouver) 
+		fmt.Printf("Dommage c'est perdu. Le mot à trouver était : %s\n", mot_a_trouver)
 	} else {
-	fmt.Println()
-	fmt.Printf("Bravo! Le mot à trouver était bien : %s\n", mot_a_trouver) 
-}
+		fmt.Println()
+		fmt.Printf("Bravo! Le mot à trouver était bien : %s\n", mot_a_trouver)
+	}
 }

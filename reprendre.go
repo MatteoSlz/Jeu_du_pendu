@@ -20,8 +20,7 @@ numero_joueur := -1
 
 for choix_joueurs {
 	fmt.Println()
-	fmt.Printf("Quel partie souhaite-tu reprendre : ")
-	fmt.Println()
+	fmt.Printf("Quel partie souhaite-tu reprendre ? ")
 	for i := 0 ; i< len(liste_joueurs_json);i++{
 		fmt.Println()
 		fmt.Printf("%s",liste_joueurs_json[i].Pseudo)
