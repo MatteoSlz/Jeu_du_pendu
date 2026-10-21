@@ -229,6 +229,26 @@ perdu := false
 		}
 	}
 
+data2, _ := os.ReadFile("save.json")
+var liste_joueurs_json2 []Sauvegarde
+json.Unmarshal(data2, &liste_joueurs_json2)
+var n_joueur int
+joueur_trouve := false
+
+for i := 0; i < len(liste_joueurs_json2); i++ {
+	if nom == liste_joueurs_json2[i].Pseudo {
+		n_joueur = i
+		joueur_trouve = true
+		break
+	}
+}
+if joueur_trouve {
+	liste_joueurs_json2 = append(liste_joueurs_json2[:n_joueur], liste_joueurs_json2[n_joueur+1:]...)
+	data2, _ = json.Marshal(liste_joueurs_json2)
+	os.WriteFile("save.json", data2, 0644)
+}
+
+
 	data_csv, _ := os.OpenFile("score.csv", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	defer data_csv.Close()
 
