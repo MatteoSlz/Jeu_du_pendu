@@ -18,6 +18,7 @@ type  Sauvegarde struct {
 	Mot string 	   `json:"mot"`
 	Lettres []mots `json:"lettres"`
 	Essais int 	   `json:"essais"`
+	Alphabets []mots `json:"alphabet"`
 	}
 
 var liste_joueurs = []Sauvegarde{}
@@ -199,6 +200,7 @@ func jouer() {
 		Mot : mot_a_trouver,
 		Lettres : tableau_mot,
 		Essais : Essais_restant,
+		Alphabets: alphabet,
 	}
 	
 	data , _ := os.ReadFile("save.json")
