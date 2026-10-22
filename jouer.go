@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/csv"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"math/rand/v2"
 	"os"
@@ -63,19 +64,24 @@ func Start() string {
 
 	data, Err_lecture_json := os.ReadFile("save.json")
 	if Err_lecture_json != nil {
-		fmt.Printf("Erreur : %v", Err_lecture_json)
-		fmt.Println()
-		os.Exit(0)
+		if errors.Is(Err_lecture_json, os.ErrNotExist) {
+			fmt.Println("Erreur")
+			os.WriteFile("save.json", []byte("[]"), 0644)
+			data = []byte("[]")
+		} else {
+			fmt.Printf("Erreur : %v\n", Err_lecture_json)
+			os.Exit(0)
+		}
 	}
 	var liste_joueurs_json []Sauvegarde
 	Err_decode := json.Unmarshal(data, &liste_joueurs_json)
-	if len(data)>0{
-	if Err_decode != nil {
-		fmt.Printf("Erreur : %v", Err_decode)
-		fmt.Println()
-		os.Exit(0)
+	if len(data) > 0 {
+		if Err_decode != nil {
+			fmt.Printf("Erreur : %v", Err_decode)
+			fmt.Println()
+			os.Exit(0)
+		}
 	}
-}
 
 	pseudo_choisis := true
 	var ecrase string
@@ -271,19 +277,22 @@ func jouer() {
 
 			data, Err2 := os.ReadFile("save.json")
 			if Err2 != nil {
-				fmt.Printf("Erreur : %v", Err2)
-				fmt.Println()
-				os.Exit(0)
+				if errors.Is(Err2, os.ErrNotExist) {
+					data = []byte("[]")
+				} else {
+					fmt.Printf("Erreur : %v\n", Err2)
+					os.Exit(0)
+				}
 			}
 			var liste_joueurs_json []Sauvegarde
 			Err2_json := json.Unmarshal(data, &liste_joueurs_json)
-			if len(data)>0 {
-			if Err2_json != nil {
-				fmt.Printf("Erreur : %v", Err2_json)
-				fmt.Println()
-				os.Exit(0)
+			if len(data) > 0 {
+				if Err2_json != nil {
+					fmt.Printf("Erreur : %v", Err2_json)
+					fmt.Println()
+					os.Exit(0)
+				}
 			}
-		}
 
 			liste_joueurs = append(liste_joueurs_json, player)
 
@@ -351,11 +360,11 @@ func jouer() {
 	}
 
 	data_csv, Err2_CSV := os.OpenFile("score.csv", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if Err2_CSV!= nil {
-	fmt.Printf("Erreur : %v",Err2_CSV)
-	fmt.Println()
-	os.Exit(0)
-}
+	if Err2_CSV != nil {
+		fmt.Printf("Erreur : %v", Err2_CSV)
+		fmt.Println()
+		os.Exit(0)
+	}
 	defer data_csv.Close()
 
 	texte := csv.NewWriter(data_csv)
