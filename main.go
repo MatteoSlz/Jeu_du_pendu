@@ -7,9 +7,9 @@ import (
 
 func main() {
 
-	if (len(os.Args) != 2) {
+	if len(os.Args) != 2 {
 		fmt.Println("Veuillez entrer une commande valide : jouer / reprendre / score")
-		return 
+		return
 	}
 	choix := os.Args[1]
 	switch choix {
@@ -18,10 +18,8 @@ func main() {
 	case "reprendre":
 		reprendre()
 	case "score":
-		score()	
+		score()
 	default:
 		fmt.Println("Choix invalide, veuillez choisir entre jouer/reprendre/score ")
 	}
 }
-
-
