@@ -9,8 +9,9 @@ func ecrire() {
 	texte := "mot.txt"
 	contenu_byte, err := os.ReadFile(texte)
 	if err != nil {
-		fmt.Println("", err)
-		return
+		fmt.Printf("Erreur : %v", err)
+		fmt.Println()
+		os.Exit(0)
 	}
 	contenu_string := string(contenu_byte)
 	var tableau []string
@@ -49,11 +50,10 @@ func ecrire() {
 		nouveau_contenu := []byte(nouveau_texte)
 		err = os.WriteFile("mot_correct.txt", nouveau_contenu, 0644)
 		if err != nil {
-			fmt.Println("", err)
-			return
+			fmt.Println("Erreur : %v", err)
+			fmt.Println()
+			os.Exit(0)
 		}
-
 		fmt.Println("ok")
-
 	}
 }
