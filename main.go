@@ -20,7 +20,7 @@ func main() {
 	case "score":
 		score()	
 	default:
-		fmt.Println("Erreur")
+		fmt.Println("Choix invalide, veuillez choisir entre jouer/reprendre/score ")
 	}
 }
 

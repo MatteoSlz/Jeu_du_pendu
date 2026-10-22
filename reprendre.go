@@ -13,9 +13,21 @@ import (
 
 func reprendre() {
 
-data, _ := os.ReadFile("save.json")
 var liste_joueurs_json []Sauvegarde
-json.Unmarshal(data,&liste_joueurs_json)
+
+data, Err := os.ReadFile("save.json")
+if Err != nil {
+	fmt.Printf("Erreur : %v",Err)
+	fmt.Println()
+	os.Exit(0)
+}
+
+Err_json := json.Unmarshal(data,&liste_joueurs_json)
+if Err_json != nil {
+	fmt.Printf("Erreur : %v",Err_json)
+	fmt.Println()
+	os.Exit(0)
+}
 
 var nom string
 choix_joueurs := true
@@ -119,11 +131,11 @@ perdu := false
 					tableau_mot[i].Lettre_trouve = true
 					lettre_trouvee = true
 				}
+			}
 			for j := 0 ; j<len(alphabet);j++{
 				if action == alphabet[j].Lettre{
 					alphabet[j].Lettre_trouve = true 
 				}
-			}
 			}
 			if lettre_trouvee {
 				fmt.Printf("Bravo ! Vous avez trouvé la lettre : %s.\n", action)
@@ -170,12 +182,12 @@ perdu := false
 	encodeData, encodeErr := json.Marshal(liste_joueurs_json)
 
 	if encodeErr != nil {
-		fmt.Printf("Erreur encodage données : %v", encodeErr)
+		fmt.Printf("Erreur : %v", encodeErr)
 		return
 	}
-	fileErr := os.WriteFile("save.json", encodeData, 0644)
-	if fileErr != nil {
-		fmt.Printf("Erreur encodage données : %v", fileErr)
+	fichierErr := os.WriteFile("save.json", encodeData, 0644)
+	if fichierErr != nil {
+		fmt.Printf("Erreur : %v", fichierErr)
 		return
 	}
 	return
@@ -229,9 +241,22 @@ perdu := false
 		}
 	}
 
-data2, _ := os.ReadFile("save.json")
+data2, Err2 := os.ReadFile("save.json")
+
+if Err2 != nil {
+	fmt.Printf("Erreur : %v",Err2)
+	fmt.Println()
+	os.Exit(0)
+}
 var liste_joueurs_json2 []Sauvegarde
-json.Unmarshal(data2, &liste_joueurs_json2)
+Err2_json := json.Unmarshal(data2, &liste_joueurs_json2)
+if Err2_json != nil {
+	fmt.Printf("Erreur : %v",Err2_json)
+	fmt.Println()
+	os.Exit(0)
+}
+
+
 var n_joueur int
 joueur_trouve := false
 
@@ -249,7 +274,12 @@ if joueur_trouve {
 }
 
 
-	data_csv, _ := os.OpenFile("score.csv", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	data_csv, Err_CSV := os.OpenFile("score.csv", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if Err_CSV != nil {
+	fmt.Printf("Erreur : %v",Err_CSV)
+	fmt.Println()
+	os.Exit(0)
+}
 	defer data_csv.Close()
 
 	texte := csv.NewWriter(data_csv)

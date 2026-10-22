@@ -61,9 +61,19 @@ var Essais_restant int
 
 func Start() string {
 
-	data, _ := os.ReadFile("save.json")
+	data, Err_lecture_json := os.ReadFile("save.json")
+	if Err_lecture_json != nil {
+		fmt.Printf("Erreur : %v", Err_lecture_json)
+		fmt.Println()
+		os.Exit(0)
+	}
 	var liste_joueurs_json []Sauvegarde
-	json.Unmarshal(data, &liste_joueurs_json) //erreur a traiter
+	Err_decode := json.Unmarshal(data, &liste_joueurs_json)
+	if Err_decode != nil {
+		fmt.Printf("Erreur : %v", Err_decode)
+		fmt.Println()
+		os.Exit(0)
+	}
 
 	pseudo_choisis := true
 	var ecrase string
@@ -257,21 +267,31 @@ func jouer() {
 				Alphabets: alphabet,
 			}
 
-			data, _ := os.ReadFile("save.json")
+			data, Err2 := os.ReadFile("save.json")
+			if Err2 != nil {
+				fmt.Printf("Erreur : %v", Err2)
+				fmt.Println()
+				os.Exit(0)
+			}
 			var liste_joueurs_json []Sauvegarde
-			json.Unmarshal(data, &liste_joueurs_json)
+			Err2_json := json.Unmarshal(data, &liste_joueurs_json)
+			if Err2_json != nil {
+				fmt.Printf("Erreur : %v", Err2_json)
+				fmt.Println()
+				os.Exit(0)
+			}
 
 			liste_joueurs = append(liste_joueurs_json, player)
 
 			encodeData, encodeErr := json.Marshal(liste_joueurs)
 
 			if encodeErr != nil {
-				fmt.Printf("Erreur encodage données : %v", encodeErr)
+				fmt.Printf("Erreur : %v", encodeErr)
 				return
 			}
-			fileErr := os.WriteFile("save.json", encodeData, 0644)
-			if fileErr != nil {
-				fmt.Printf("Erreur encodage données : %v", fileErr)
+			fichierErr := os.WriteFile("save.json", encodeData, 0644)
+			if fichierErr != nil {
+				fmt.Printf("Erreur : %v", fichierErr)
 				return
 			}
 			return
@@ -326,7 +346,12 @@ func jouer() {
 		}
 	}
 
-	data_csv, _ := os.OpenFile("score.csv", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	data_csv, Err2_CSV := os.OpenFile("score.csv", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if Err2_CSV!= nil {
+	fmt.Printf("Erreur : %v",Err2_CSV)
+	fmt.Println()
+	os.Exit(0)
+}
 	defer data_csv.Close()
 
 	texte := csv.NewWriter(data_csv)
@@ -339,6 +364,6 @@ func jouer() {
 
 	erreur := texte.Write(nouvelle_data)
 	if erreur != nil {
-		fmt.Printf("Erreur sur le CSV : %v\n", erreur)
+		fmt.Printf("Erreur : %v\n", erreur)
 	}
 }
