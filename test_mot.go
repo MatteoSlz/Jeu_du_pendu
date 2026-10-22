@@ -50,7 +50,7 @@ func ecrire() {
 		nouveau_contenu := []byte(nouveau_texte)
 		err = os.WriteFile("mot_correct.txt", nouveau_contenu, 0644)
 		if err != nil {
-			fmt.Println("Erreur : %v", err)
+			fmt.Printf("Erreur : %v", err)
 			fmt.Println()
 			os.Exit(0)
 		}

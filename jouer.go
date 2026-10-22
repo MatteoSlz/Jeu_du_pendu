@@ -69,11 +69,13 @@ func Start() string {
 	}
 	var liste_joueurs_json []Sauvegarde
 	Err_decode := json.Unmarshal(data, &liste_joueurs_json)
+	if len(data)>0{
 	if Err_decode != nil {
 		fmt.Printf("Erreur : %v", Err_decode)
 		fmt.Println()
 		os.Exit(0)
 	}
+}
 
 	pseudo_choisis := true
 	var ecrase string
@@ -84,7 +86,6 @@ func Start() string {
 		fmt.Println()
 		fmt.Printf("Comment vous appelez vous : ")
 		fmt.Scan(&nom)
-		fmt.Println()
 		for i := 0; i < len(liste_joueurs_json); i++ {
 			if nom == liste_joueurs_json[i].Pseudo {
 				for saisie_valide {
@@ -154,6 +155,7 @@ func jouer() {
 		tableau_mot[i].Lettre = string(s)
 		tableau_mot[i].Lettre_trouve = false
 	}
+	fmt.Println()
 	fmt.Println()
 	fmt.Println("Bienvenue au jeu du pendu !")
 	fmt.Printf("Votre mot à trouver contient %d lettres. ", len(mot_a_trouver))
@@ -275,11 +277,13 @@ func jouer() {
 			}
 			var liste_joueurs_json []Sauvegarde
 			Err2_json := json.Unmarshal(data, &liste_joueurs_json)
+			if len(data)>0 {
 			if Err2_json != nil {
 				fmt.Printf("Erreur : %v", Err2_json)
 				fmt.Println()
 				os.Exit(0)
 			}
+		}
 
 			liste_joueurs = append(liste_joueurs_json, player)
 

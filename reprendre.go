@@ -23,6 +23,10 @@ if Err != nil {
 }
 
 Err_json := json.Unmarshal(data,&liste_joueurs_json)
+if len(liste_joueurs_json) == 0 {
+		fmt.Println("Aucune partie sauvegardée trouvée.")
+		os.Exit(0)
+	}
 if Err_json != nil {
 	fmt.Printf("Erreur : %v",Err_json)
 	fmt.Println()
@@ -232,6 +236,7 @@ perdu := false
 		Status = "victoire"
 		fmt.Println()
 		fmt.Printf("Bravo! Le mot à trouver était bien : %s\n", mot_a_trouver)
+		fmt.Println()
 	}
 
 	alphabet_string := ""
@@ -250,11 +255,13 @@ if Err2 != nil {
 }
 var liste_joueurs_json2 []Sauvegarde
 Err2_json := json.Unmarshal(data2, &liste_joueurs_json2)
-if Err2_json != nil {
-	fmt.Printf("Erreur : %v",Err2_json)
-	fmt.Println()
-	os.Exit(0)
-}
+if len(data)>0{
+			if Err2_json != nil {
+				fmt.Printf("Erreur : %v", Err2_json)
+				fmt.Println()
+				os.Exit(0)
+			}
+		}
 
 
 var n_joueur int
@@ -269,7 +276,9 @@ for i := 0; i < len(liste_joueurs_json2); i++ {
 }
 if joueur_trouve {
 	liste_joueurs_json2 = append(liste_joueurs_json2[:n_joueur], liste_joueurs_json2[n_joueur+1:]...)
-	data2, _ = json.Marshal(liste_joueurs_json2)
+	data2, Erreur2 := json.Marshal(liste_joueurs_json2)
+	if Erreur2 != nil {
+	fmt.Printf("Erreur %v : ",Erreur2)}
 	os.WriteFile("save.json", data2, 0644)
 }
 
