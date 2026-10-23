@@ -36,6 +36,7 @@ type Sauvegarde struct {
 	Lettres   []mots `json:"lettres"`
 	Essais    int    `json:"essais"`
 	Alphabets []mots `json:"alphabet"`
+	Difficultesave string `json:difficulte`
 }
 
 var liste_joueurs = []Sauvegarde{}
@@ -310,7 +311,7 @@ func jouer() {
 				}
 			} else {
 				fmt.Println()
-				afficherTexte50l(fmt.Sprintf("La lettre : %s a déjà été proposé.", action))
+				afficherTexte50l(fmt.Sprintf(Orange +"La lettre : %s a déjà été proposé."+ Reset, action))
 				fmt.Println()
 			}
 
@@ -319,14 +320,14 @@ func jouer() {
 				defaite = false
 			} else {
 				fmt.Println()
-				afficherTexte50("Il ne vous reste pas assez d'essais pour effectuer cette action.")
+				afficherTexte50(Yellow + "Il ne vous reste pas assez d'essais pour effectuer cette action."+ Reset)
 				continue
 			}
 		case "!save":
 			fmt.Println()
-			afficherTexte250("Sauvegarde en cours . . . . . . . . . . .")
+			afficherTexte250(Cyan +"Sauvegarde en cours . . . . . . . . . . ."+ Reset)
 			fmt.Println()
-			afficherTexte50("Sauvegarde terminée. Nous avons hâte de vous revoir!")
+			afficherTexte50(Cyan +"Sauvegarde terminée. Nous avons hâte de vous revoir!"+ Reset)
 			fmt.Println()
 
 			player := Sauvegarde{
@@ -335,6 +336,7 @@ func jouer() {
 				Lettres:   tableau_mot,
 				Essais:    Essais_restant,
 				Alphabets: alphabet,
+				Difficultesave: Difficulte,
 			}
 
 			data, Err2 := os.ReadFile("src/save.json")

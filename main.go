@@ -6,7 +6,7 @@ import (
 
 func main() {
 	if len(os.Args) != 2 {
-		afficherTexte50("Veuillez entrer une commande valide : jouer / reprendre / score")
+		afficherTexte50(Red + "Veuillez entrer une commande valide : jouer / reprendre / score" + Reset)
 		return
 	}
 	Recuperation()
@@ -19,6 +19,6 @@ func main() {
 	case "score":
 		score()
 	default:
-		afficherTexte50("Choix invalide, veuillez choisir entre jouer/reprendre/score ")
+		afficherTexte50(Red + "Choix invalide, veuillez choisir entre jouer/reprendre/score " + Reset)
 	}
 }
