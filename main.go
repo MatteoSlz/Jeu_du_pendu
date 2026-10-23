@@ -15,7 +15,7 @@ func  Start() {
 }
 
 func main() {
-	
+	ecrire()
 	Start()
 
 	if (len(os.Args) != 2) {
