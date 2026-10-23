@@ -23,6 +23,11 @@ func score() {
 		fmt.Printf("Erreur : %v", erreur)
 	}
 
+	if len(lignes) == 0 {
+		afficherTexte50("Vous n'avez pas encore joué de partie.")
+		os.Exit(0)
+	}
+
 	fmt.Printf("PSEUDO\t STATUT\t\t ESSAIS\t MOT\t\t DATE\n")
 
 	for i := 0; i < len(lignes); i++ {
