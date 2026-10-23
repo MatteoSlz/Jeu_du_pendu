@@ -35,10 +35,10 @@ func jouer() {
 		tableau_mot[i].lettre = string(s)
 		tableau_mot[i].lettre_trouve = false
 	}
+	fmt.Println()
 	fmt.Println("Bienvenue au jeu du pendu !")
 	fmt.Printf("Votre mot à trouver contient %d lettres. ", len(mot_a_trouver))
 	fmt.Println("À toi de jouer !")
-	fmt.Println()
 	index_lettre_donnee_debut := rand.IntN(len(mot_a_trouver))
 	lettre_donnee_debut := tableau_mot[index_lettre_donnee_debut].lettre
 	for i := 0; i < len(tableau_mot); i++ {
@@ -57,10 +57,15 @@ func jouer() {
 			defaite = false
 			break
 		}
+		fmt.Println()
 		for i := 0; i < len(mot_a_trouver); i++ {
 			if tableau_mot[i].lettre_trouve {
 				fmt.Printf("%s ", tableau_mot[i].lettre)
-			} else {
+			} else if tableau_mot[i].lettre == "-" {
+				fmt.Printf("- ")
+				tableau_mot[i].lettre_trouve = true 
+
+			}else{
 				fmt.Printf("_ ")
 			}
 		}
@@ -83,12 +88,18 @@ func jouer() {
 			if lettre_trouvee {
 				fmt.Printf("Bravo ! Vous avez trouvé la lettre : %s.\n", action)
 			} else {
-				fmt.Printf("Dommage. La lettre '%s' n'est pas dans le mot.\n", action)
+				fmt.Printf("Dommage. La lettre '%s' n'est pas dans le mot.", action)
 				Essais_restant -- 
 			}
 			fmt.Println()
 		case mot_a_trouver:
+			if Essais_restant >= 2 {
 			defaite = false
+		}else{
+			fmt.Println()
+			fmt.Println("Il ne vous reste pas assez d'essais pour effectuer cette action.")
+			continue
+		}
 		default:
 			if (len(mot_a_trouver) == len(action)) && (Essais_restant >=2){
 				valeur := 0
@@ -104,8 +115,12 @@ func jouer() {
 					Essais_restant -= 2
 				}
 
+			} else if (len(mot_a_trouver) == len(action)) && (Essais_restant <2){
+				fmt.Println("Il ne vous reste pas assez d'essais pour effectuer cette action.")
+			fmt.Println()
+			continue
 			} else {
-			fmt.Println("Entrée invalide, veuillez proposer une seule lettre ou un mot.")
+			fmt.Println("Entrée invalide, veuillez proposer une seule lettre ou un mot de la bonne longueur.")
 			fmt.Println()
 			continue
 			}
@@ -117,7 +132,6 @@ func jouer() {
 	}
 
 	if perdu {
-	fmt.Println()
 	fmt.Printf("Dommage c'est perdu. Le mot à trouver était : %s\n", mot_a_trouver) 
 	} else {
 	fmt.Println()
