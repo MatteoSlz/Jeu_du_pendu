@@ -182,7 +182,6 @@ func jouer() {
 		tableau_mot[i].Lettre_trouve = false
 	}
 	fmt.Println()
-	fmt.Println()
 	afficherTexte50("Bienvenue au jeu du pendu !")
 	afficherTexte50(fmt.Sprintf("Votre mot à trouver contient %d lettres. ", len(mot_a_trouver)))
 	fmt.Println("À toi de jouer !")
