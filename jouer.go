@@ -12,6 +12,19 @@ import (
 	"time"
 )
 
+const (
+	Orange  = "\033[38;5;208m"
+	Reset   = "\033[0m"
+	Black   = "\033[30m"
+	Red     = "\033[31m"
+	Green   = "\033[32m"
+	Yellow  = "\033[33m"
+	Blue    = "\033[34m"
+	Magenta = "\033[35m"
+	Cyan    = "\033[36m"
+	White   = "\033[37m"
+)
+
 type mots struct {
 	Lettre        string `json:"lettre"`
 	Lettre_trouve bool   `json:"lettre_trouve"`
@@ -55,7 +68,7 @@ var alphabet = []mots{
 	{Lettre: "y", Lettre_trouve: false},
 	{Lettre: "z", Lettre_trouve: false},
 }
-
+var oui = true
 var nom string
 var Status string
 var Essais_restant int
@@ -64,13 +77,13 @@ var Difficulte string
 func afficherTexte50l(texte string) {
 	for _, caractere := range texte {
 		fmt.Print(string(caractere))
-		time.Sleep(50 * time.Millisecond)
+		time.Sleep(5 * time.Millisecond)
 	}
 }
 func afficherTexte50(texte string) {
 	for _, caractere := range texte {
 		fmt.Print(string(caractere))
-		time.Sleep(50 * time.Millisecond)
+		time.Sleep(5 * time.Millisecond)
 	}
 	fmt.Println()
 }
@@ -81,7 +94,6 @@ func afficherTexte250(texte string) {
 	}
 	fmt.Println()
 }
-
 
 func Start() string {
 
@@ -113,15 +125,15 @@ func Start() string {
 
 	for pseudo_choisis {
 		fmt.Println()
-		afficherTexte50l("Comment vous appelez vous : ")
+		afficherTexte50l(Magenta + "Comment vous appelez vous : " + Reset)
 		fmt.Scan(&nom)
 		for i := 0; i < len(liste_joueurs_json); i++ {
 			if nom == liste_joueurs_json[i].Pseudo {
 				for saisie_valide {
 					n_joueur = i
-					afficherTexte50(fmt.Sprintf("Le pseudo %s existe déjà ", nom))
-					afficherTexte50("Voulez vous écraser la sauvegarde précédente effectué sur ce pseudo ?")
-					afficherTexte50("oui/non : ")
+					afficherTexte50(fmt.Sprintf(Yellow+"Le pseudo %s existe déjà "+Reset, nom))
+					afficherTexte50(Magenta + "Voulez vous écraser la sauvegarde précédente effectué sur ce pseudo ?" + Reset)
+					afficherTexte50(Magenta + "oui/non : " + Reset)
 					fmt.Scan(&ecrase)
 					ecrase = strings.ToLower(ecrase)
 					switch ecrase {
@@ -140,19 +152,19 @@ func Start() string {
 						saisie_valide = false
 					case "non":
 						fmt.Println()
-						afficherTexte50("Pas de problème. Au revoir !")
+						afficherTexte50(Magenta + "Pas de problème. Au revoir !" + Reset)
 						fmt.Println()
 						os.Exit(0)
 					default:
 						fmt.Println()
-						afficherTexte50("Veuillez entrer une saisie valide.")
+						afficherTexte50(Red + "Veuillez entrer une saisie valide." + Reset)
 						fmt.Println()
 					}
 				}
 			}
 		}
 		fmt.Println()
-		afficherTexte50(fmt.Sprintf("D'accord bienvenue %s !", nom))
+		afficherTexte50(fmt.Sprintf(Magenta+"D'accord bienvenue %s !"+Reset, nom))
 		pseudo_choisis = false
 	}
 	return nom
@@ -165,7 +177,7 @@ func jouer() {
 	perdu := false
 	Essais_restant := 6
 	if difficulte == "hardcore" {
-		Essais_restant = 2 
+		Essais_restant = 2
 		difficulteFinal = "difficile"
 	}
 	defaite := true
@@ -179,7 +191,7 @@ func jouer() {
 	}
 	tableau_final := strings.Fields(string(contenu_byte))
 	if len(tableau_final) == 0 {
-		fmt.Println("Erreur : Le fichier est vide ou ne contient aucun mot valide.")
+		fmt.Println("Erreur : Le fichier est vide.")
 		return
 	}
 	index_mots_random := rand.IntN(len(tableau_final))
@@ -191,9 +203,17 @@ func jouer() {
 		tableau_mot[i].Lettre_trouve = false
 	}
 	fmt.Println()
-	afficherTexte50("Bienvenue au jeu du pendu !")
-	afficherTexte50(fmt.Sprintf("Votre mot à trouver contient %d lettres. ", len(mot_a_trouver)))
-	fmt.Println("À toi de jouer !")
+	longueur_mot := len(mot_a_trouver)
+	for i := 0; i < len(mot_a_trouver); i++ {
+		if string(mot_a_trouver[i]) == "-" {
+			longueur_mot--
+		}
+	}
+	afficherTexte50(Blue + "Bonne chance !" + Reset)
+	fmt.Println()
+	afficherTexte50(fmt.Sprintf(Blue +"Votre mot à trouver contient" + Reset + Red +" %d "+ Reset + Blue + "lettres. "+Reset, longueur_mot))
+	fmt.Println()
+	afficherTexte50(Blue + "À toi de jouer !" + Reset)
 	index_lettre_donnee_debut := rand.IntN(len(mot_a_trouver))
 	lettre_donnee_debut := tableau_mot[index_lettre_donnee_debut].Lettre
 	for i := 0; i < len(tableau_mot); i++ {
@@ -221,9 +241,9 @@ func jouer() {
 		fmt.Println()
 		for i := 0; i < len(mot_a_trouver); i++ {
 			if tableau_mot[i].Lettre_trouve {
-				afficherTexte50l(fmt.Sprintf("%s ", tableau_mot[i].Lettre))
+				afficherTexte50l(fmt.Sprintf(Green+"%s "+Reset, tableau_mot[i].Lettre))
 			} else if tableau_mot[i].Lettre == "-" {
-				afficherTexte50l("- ")
+				afficherTexte50l(Blue + "- " + Reset)
 				tableau_mot[i].Lettre_trouve = true
 
 			} else {
@@ -231,17 +251,28 @@ func jouer() {
 			}
 		}
 
-		afficherTexte50l(fmt.Sprintf("\tIl vous reste %d essai(s)", Essais_restant))
+		afficherTexte50l(fmt.Sprintf(Yellow+"\tIl vous reste %d essai(s)"+Reset, Essais_restant))
 		fmt.Println()
-		afficherTexte50l("Lettres proposées : ")
+		afficherTexte50l(Blue + "Lettres proposées : " + Reset)
 		for i := 0; i < len(alphabet); i++ {
 			if alphabet[i].Lettre_trouve == true {
-				afficherTexte50l(fmt.Sprintf("%s ", alphabet[i].Lettre))
+				dansLeMot := false
+				for j := 0; j < len(tableau_mot); j++ {
+					if alphabet[i].Lettre == tableau_mot[j].Lettre {
+						dansLeMot = true
+						break
+					}
+				}
+				if dansLeMot {
+					afficherTexte50l(fmt.Sprintf(Green+"%s "+Reset, alphabet[i].Lettre))
+				} else {
+					afficherTexte50l(fmt.Sprintf(Red+"%s "+Reset, alphabet[i].Lettre))
+				}
 			}
 		}
 		fmt.Println()
 		fmt.Println()
-		afficherTexte50l("Que voulez-vous proposer : ")
+		afficherTexte50l(Blue + "Que voulez-vous proposer : " + Reset)
 		var action string
 		fmt.Scan(&action)
 		action = strings.ToLower(action)
@@ -267,11 +298,14 @@ func jouer() {
 					}
 				}
 				if lettre_trouvee {
-					afficherTexte50l(fmt.Sprintf("Bravo ! Vous avez trouvé la lettre : %s.\n", action))
+					fmt.Println()
+					afficherTexte50l(fmt.Sprintf(Green+"Bravo ! Vous avez trouvé la lettre : %s.\n"+Reset, action))
+					oui = true
 				} else {
 					fmt.Println()
-					afficherTexte50l(fmt.Sprintf("Dommage la lettre '%s' n'est pas dans le mot.", action))
+					afficherTexte50l(fmt.Sprintf(Red+"Dommage la lettre '%s' n'est pas dans le mot."+Reset, action))
 					fmt.Println()
+					oui = false
 					Essais_restant--
 				}
 			} else {
@@ -346,19 +380,19 @@ func jouer() {
 				}
 				if valeur == len(action) {
 					fmt.Println()
-					afficherTexte50("Le mot n'est pas bon, vous perdez 2 essais.")
+					afficherTexte50(Red + "Le mot n'est pas bon, vous perdez 2 essais." + Red)
 					fmt.Println()
 					Essais_restant -= 2
 				}
 
 			} else if (len(mot_a_trouver) == len(action)) && (Essais_restant < 2) {
 				fmt.Println()
-				afficherTexte50("Il ne vous reste pas assez d'essais pour effectuer cette action.")
+				afficherTexte50(Yellow + "Il ne vous reste pas assez d'essais pour effectuer cette action." + Reset)
 				fmt.Println()
 				continue
 			} else {
 				fmt.Println()
-				afficherTexte50("Entrée invalide, veuillez proposer une seule lettre ou un mot de la bonne longueur.")
+				afficherTexte50(Red + "Entrée invalide, veuillez proposer une seule lettre ou un mot de la bonne longueur." + Reset)
 				fmt.Println()
 				continue
 			}
@@ -370,13 +404,13 @@ func jouer() {
 	}
 
 	if perdu {
-		afficherTexte50l(fmt.Sprintf("Dommage c'est perdu. Le mot à trouver était : %s\n", mot_a_trouver))
+		afficherTexte50l(fmt.Sprintf(Red+"Défaite, vous n'avez plus d'essais restants! Le mot à trouver était : " + Reset + Blue + "%s\n"+Reset, mot_a_trouver))
 		fmt.Println()
 		Status = "defaite"
 	} else {
 		Status = "victoire"
 		fmt.Println()
-		afficherTexte50l(fmt.Sprintf("Bravo! Le mot à trouver était bien : %s\n", mot_a_trouver))
+		afficherTexte50l(fmt.Sprintf(Green+"Bravo! Le mot à trouver était bien : %s\n"+Reset, mot_a_trouver))
 		fmt.Println()
 	}
 
@@ -401,7 +435,7 @@ func jouer() {
 	date := time.Now().Format("2006-01-02 15:04")
 	Essais_affiche := strconv.Itoa(Essais_restant)
 
-	nouvelle_data := []string{nom, Status, Essais_affiche,difficulte, mot_a_trouver, alphabet_string, date}
+	nouvelle_data := []string{nom, Status, Essais_affiche, difficulte, mot_a_trouver, alphabet_string, date}
 
 	erreur := texte.Write(nouvelle_data)
 	if erreur != nil {
