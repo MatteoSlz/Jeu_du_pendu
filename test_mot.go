@@ -6,7 +6,7 @@ import (
 )
 
 func ecrire() {
-	texte := "mot.txt"
+	texte := "src/mot.txt"
 	contenu_byte, err := os.ReadFile(texte)
 	if err != nil {
 		fmt.Printf("Erreur : %v", err)
@@ -48,7 +48,7 @@ func ecrire() {
 		}
 
 		nouveau_contenu := []byte(nouveau_texte)
-		err = os.WriteFile("mot_correct.txt", nouveau_contenu, 0644)
+		err = os.WriteFile("src/mot_correct.txt", nouveau_contenu, 0644)
 		if err != nil {
 			fmt.Printf("Erreur : %v", err)
 			fmt.Println()
