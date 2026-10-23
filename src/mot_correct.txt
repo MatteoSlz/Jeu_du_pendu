@@ -1,6 +1,8 @@
+pendu
+clavier
+ordinateur
+porte-monnaie
+fichier
+table
+changer
 alexandre
-tableaux
-anticonstitutionel
-tableur
-mardi
-boule-de-neige

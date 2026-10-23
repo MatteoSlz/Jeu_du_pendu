@@ -9,6 +9,7 @@ func main() {
 		afficherTexte50("Veuillez entrer une commande valide : jouer / reprendre / score")
 		return
 	}
+	Recuperation()
 	choix := os.Args[1]
 	switch choix {
 	case "jouer":
@@ -17,8 +18,6 @@ func main() {
 		reprendre()
 	case "score":
 		score()
-	case "test":
-		Recuperation()
 	default:
 		afficherTexte50("Choix invalide, veuillez choisir entre jouer/reprendre/score ")
 	}
