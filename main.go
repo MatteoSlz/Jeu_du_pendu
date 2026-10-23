@@ -1,14 +1,13 @@
 package main
 
 import (
-	"fmt"
 	"os"
 )
 
 func main() {
 
 	if len(os.Args) != 2 {
-		fmt.Println("Veuillez entrer une commande valide : jouer / reprendre / score")
+		afficherTexte50("Veuillez entrer une commande valide : jouer / reprendre / score")
 		return
 	}
 	choix := os.Args[1]
@@ -20,6 +19,6 @@ func main() {
 	case "score":
 		score()
 	default:
-		fmt.Println("Choix invalide, veuillez choisir entre jouer/reprendre/score ")
+		afficherTexte50("Choix invalide, veuillez choisir entre jouer/reprendre/score ")
 	}
 }
