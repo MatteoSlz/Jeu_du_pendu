@@ -23,16 +23,23 @@ func score() {
 		fmt.Printf("Erreur : %v", erreur)
 	}
 
-	fmt.Printf("PSEUDO\t STATUT\t\t ESSAIS\t MOT\t\t DATE\n")
+	if len(lignes) == 0 {
+		afficherTexte50("Vous n'avez pas encore joué de partie.")
+		os.Exit(0)
+	}
+
+	fmt.Printf("PSEUDO\t STATUT\t\t ESSAIS\t MOT\t LETTRES\t DATE\n")
 
 	for i := 0; i < len(lignes); i++ {
 		nom := lignes[i][0]
 		status := lignes[i][1]
 		essais := lignes[i][2]
 		mot := lignes[i][3]
+		lettre := lignes[i][4]
 		date := lignes[i][5]
 
-		fmt.Printf("%s\t %s\t %s\t %s\t %s\n", nom, status, essais, mot, date)
+		fmt.Printf("%s\t %s\t %s\t %s\t %s\t %s\n", nom, status, essais, mot,lettre, date)
 	}
-
+fmt.Println()
+afficherTexte50("Voulez vous afficher le classement des 5 meilleurs joueurs ?")
 }

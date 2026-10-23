@@ -59,6 +59,7 @@ var alphabet = []mots{
 var nom string
 var Status string
 var Essais_restant int
+var Difficulte string
 
 func afficherTexte50l(texte string) {
 	for _, caractere := range texte {
@@ -79,6 +80,29 @@ func afficherTexte250(texte string) {
 		time.Sleep(250 * time.Millisecond)
 	}
 	fmt.Println()
+}
+
+func ChoixDifficulte() string {
+	difficulteChoix := true 
+	for difficulteChoix {
+	afficherTexte50("Quelle difficulté voulez-vous choisir ? (Facile / Normal / Difficile / Hardcore)")
+	afficherTexte50l(": ")
+	fmt.Scan(&Difficulte)
+	Difficulte = strings.ToLower(Difficulte)
+	switch Difficulte {
+	case "facile":
+		return "facile"
+	case "normal":
+		return "normal"
+	case "difficile":
+		return "difficile"
+	case "hardcore":
+		return "hardcore"
+	default:
+		afficherTexte50("Veuillez choisir entre Facile / Normal / Difficile / Hardcore")
+	}
+}
+	return ""
 }
 
 func Start() string {
@@ -158,6 +182,7 @@ func Start() string {
 
 func jouer() {
 	s := Start()
+	ChoixDifficulte()
 	perdu := false
 	Essais_restant := 6
 	defaite := true
