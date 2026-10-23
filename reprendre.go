@@ -15,11 +15,11 @@ func reprendre() {
 
 	var liste_joueurs_json []Sauvegarde
 
-	data, Err := os.ReadFile("save.json")
+	data, Err := os.ReadFile("src/save.json")
 	if Err != nil {
 		if errors.Is(Err, os.ErrNotExist) {
 			fmt.Println("Erreur")
-			os.WriteFile("save.json", []byte("[]"), 0644)
+			os.WriteFile("src/save.json", []byte("[]"), 0644)
 			data = []byte("[]")
 		} else {
 			fmt.Printf("Erreur : %v\n", Err)
@@ -192,7 +192,7 @@ func reprendre() {
 				fmt.Printf("Erreur : %v", encodeErr)
 				return
 			}
-			fichierErr := os.WriteFile("save.json", encodeData, 0644)
+			fichierErr := os.WriteFile("src/save.json", encodeData, 0644)
 			if fichierErr != nil {
 				fmt.Printf("Erreur : %v", fichierErr)
 				return
@@ -248,7 +248,7 @@ func reprendre() {
 		}
 	}
 
-	data2, Err2 := os.ReadFile("save.json")
+	data2, Err2 := os.ReadFile("src/save.json")
 	if Err2 != nil {
 		if errors.Is(Err2, os.ErrNotExist) {
 			data2 = []byte("[]")
@@ -287,10 +287,10 @@ func reprendre() {
 		if Erreur2 != nil {
 			fmt.Printf("Erreur %v : ", Erreur2)
 		}
-		os.WriteFile("save.json", data2, 0644)
+		os.WriteFile("src/save.json", data2, 0644)
 	}
 
-	data_csv, Err_CSV := os.OpenFile("score.csv", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	data_csv, Err_CSV := os.OpenFile("src/score.csv", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if Err_CSV != nil {
 		fmt.Printf("Erreur : %v", Err_CSV)
 		fmt.Println()

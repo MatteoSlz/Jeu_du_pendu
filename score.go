@@ -8,7 +8,7 @@ import (
 
 func score() {
 
-	data_csv, Err_score_CSV := os.OpenFile("score.csv", os.O_RDONLY, 0644)
+	data_csv, Err_score_CSV := os.OpenFile("src/score.csv", os.O_RDONLY, 0644)
 	if Err_score_CSV != nil {
 		fmt.Printf("Erreur : %v", Err_score_CSV)
 		fmt.Println()

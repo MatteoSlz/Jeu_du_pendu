@@ -83,11 +83,11 @@ func afficherTexte250(texte string) {
 
 func Start() string {
 
-	data, Err_lecture_json := os.ReadFile("save.json")
+	data, Err_lecture_json := os.ReadFile("src/save.json")
 	if Err_lecture_json != nil {
 		if errors.Is(Err_lecture_json, os.ErrNotExist) {
 			fmt.Println("Erreur")
-			os.WriteFile("save.json", []byte("[]"), 0644)
+			os.WriteFile("src/save.json", []byte("[]"), 0644)
 			data = []byte("[]")
 		} else {
 			fmt.Printf("Erreur : %v\n", Err_lecture_json)
@@ -130,7 +130,7 @@ func Start() string {
 						if encodeErr != nil {
 							fmt.Printf("Erreur : %v", encodeErr)
 						}
-						fileErr := os.WriteFile("save.json", encodeData, 0644)
+						fileErr := os.WriteFile("src/save.json", encodeData, 0644)
 						if fileErr != nil {
 							fmt.Printf("Erreur : %v", fileErr)
 						}
@@ -162,7 +162,7 @@ func jouer() {
 	Essais_restant := 6
 	defaite := true
 	count_bonne_lettre := 0
-	liste_mot := "mot_correct.txt"
+	liste_mot := "src/mot_correct.txt"
 	contenu_byte, err := os.ReadFile(liste_mot)
 	if err != nil {
 		fmt.Println("Erreur lors de la lecture du fichier :", err)
@@ -232,7 +232,7 @@ func jouer() {
 		}
 		fmt.Println()
 		fmt.Println()
-		afficherTexte50("Que voulez-vous proposer : ")
+		afficherTexte50l("Que voulez-vous proposer : ")
 		var action string
 		fmt.Scan(&action)
 		action = strings.ToLower(action)
@@ -294,7 +294,7 @@ func jouer() {
 				Alphabets: alphabet,
 			}
 
-			data, Err2 := os.ReadFile("save.json")
+			data, Err2 := os.ReadFile("src/save.json")
 			if Err2 != nil {
 				if errors.Is(Err2, os.ErrNotExist) {
 					data = []byte("[]")
@@ -321,7 +321,7 @@ func jouer() {
 				fmt.Printf("Erreur : %v", encodeErr)
 				return
 			}
-			fichierErr := os.WriteFile("save.json", encodeData, 0644)
+			fichierErr := os.WriteFile("src/save.json", encodeData, 0644)
 			if fichierErr != nil {
 				fmt.Printf("Erreur : %v", fichierErr)
 				return
@@ -378,7 +378,7 @@ func jouer() {
 		}
 	}
 
-	data_csv, Err2_CSV := os.OpenFile("score.csv", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	data_csv, Err2_CSV := os.OpenFile("src/score.csv", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if Err2_CSV != nil {
 		fmt.Printf("Erreur : %v", Err2_CSV)
 		fmt.Println()
