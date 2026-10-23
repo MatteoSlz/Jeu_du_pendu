@@ -82,28 +82,6 @@ func afficherTexte250(texte string) {
 	fmt.Println()
 }
 
-func ChoixDifficulte() string {
-	difficulteChoix := true 
-	for difficulteChoix {
-	afficherTexte50("Quelle difficulté voulez-vous choisir ? (Facile / Normal / Difficile / Hardcore)")
-	afficherTexte50l(": ")
-	fmt.Scan(&Difficulte)
-	Difficulte = strings.ToLower(Difficulte)
-	switch Difficulte {
-	case "facile":
-		return "facile"
-	case "normal":
-		return "normal"
-	case "difficile":
-		return "difficile"
-	case "hardcore":
-		return "hardcore"
-	default:
-		afficherTexte50("Veuillez choisir entre Facile / Normal / Difficile / Hardcore")
-	}
-}
-	return ""
-}
 
 func Start() string {
 
@@ -182,12 +160,18 @@ func Start() string {
 
 func jouer() {
 	s := Start()
-	ChoixDifficulte()
+	difficulte := ecriture_difficulte()
+	difficulteFinal := difficulte
 	perdu := false
 	Essais_restant := 6
+	if difficulte == "hardcore" {
+		Essais_restant = 2 
+		difficulteFinal = "difficile"
+	}
 	defaite := true
 	count_bonne_lettre := 0
-	liste_mot := "src/mot_correct.txt"
+
+	liste_mot := "src/mot_" + difficulteFinal + ".txt"
 	contenu_byte, err := os.ReadFile(liste_mot)
 	if err != nil {
 		fmt.Println("Erreur lors de la lecture du fichier :", err)
@@ -417,7 +401,7 @@ func jouer() {
 	date := time.Now().Format("2006-01-02 15:04")
 	Essais_affiche := strconv.Itoa(Essais_restant)
 
-	nouvelle_data := []string{nom, Status, Essais_affiche, mot_a_trouver, alphabet_string, date}
+	nouvelle_data := []string{nom, Status, Essais_affiche,difficulte, mot_a_trouver, alphabet_string, date}
 
 	erreur := texte.Write(nouvelle_data)
 	if erreur != nil {
