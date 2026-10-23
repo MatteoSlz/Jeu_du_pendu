@@ -128,11 +128,11 @@ func Start() string {
 						encodeData, encodeErr := json.Marshal(liste_joueurs_json)
 
 						if encodeErr != nil {
-							fmt.Printf("Erreur encodage données : %v", encodeErr)
+							fmt.Printf("Erreur : %v", encodeErr)
 						}
 						fileErr := os.WriteFile("save.json", encodeData, 0644)
 						if fileErr != nil {
-							fmt.Printf("Erreur encodage données : %v", fileErr)
+							fmt.Printf("Erreur : %v", fileErr)
 						}
 						pseudo_choisis = false
 						saisie_valide = false
