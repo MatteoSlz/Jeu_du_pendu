@@ -91,6 +91,7 @@ func reprendre() {
 	}
 
 	for defaite {
+		stopSound()
 		count_bonne_lettre = 0
 		for i := 0; i < len(mot_a_trouver); i++ {
 			if tableau_mot[i].Lettre_trouve {
@@ -116,6 +117,50 @@ func reprendre() {
 
 		afficherTexte50l(fmt.Sprintf(Yellow+"\tIl vous reste %d essai(s)"+Reset, Essais_restant))
 		fmt.Println()
+
+if Essais_restant == 5 {
+			fmt.Printf("%-40s%s", "", "\n")
+			fmt.Printf("%-40s%s", "", "\n")
+			fmt.Printf("%-40s%s", "", "\n")
+			fmt.Printf("%-40s%s", "", "\n")
+			fmt.Printf("%-40s%s", "", "\n")
+			fmt.Printf("%-40s%s", "", "__|__ \n")
+		}
+		if Essais_restant == 4 {
+			fmt.Printf("%-40s%s", "", "      \n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "__|__ \n")
+		}
+		if Essais_restant == 3 {
+			fmt.Printf("%-40s%s", "", "  _______\n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "__|__ \n")
+		}
+		if Essais_restant == 2 {
+			fmt.Printf("%-40s%s", "", "  _______\n")
+			fmt.Printf("%-40s%s", "", "  |/   \n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "__|__ \n")
+		}
+		if Essais_restant == 1 {
+			fmt.Printf("%-40s%s", "", "  _______\n")
+			fmt.Printf("%-40s%s", "", "  |/   |\n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "__|__ \n")
+		}
+		fmt.Println()
+
+
 		afficherTexte50l(couleur + "Lettres proposées : " + Reset)
 		for i := 0; i < len(alphabet); i++ {
 			if alphabet[i].Lettre_trouve == true {
@@ -162,13 +207,18 @@ func reprendre() {
 				}
 				if lettre_trouvee {
 					PlaySoundValidation()
+					fmt.Println()
 					afficherTexte50l(fmt.Sprintf(Green+"Bravo ! Vous avez trouvé la lettre : %s.\n"+Reset, action))
+					oui = true
+					afficherTexteSoundValide("  ")
 				} else {
 					PlaySoundFaux()
 					fmt.Println()
 					afficherTexte50l(fmt.Sprintf(Red+"Dommage la lettre '%s' n'est pas dans le mot."+Reset, action))
 					fmt.Println()
+					oui = false
 					Essais_restant--
+					afficherTexteSoundFaux(" ")
 				}
 			} else {
 				fmt.Println()
@@ -259,6 +309,8 @@ func reprendre() {
 		fmt.Printf("%-40s%s", "", "  |   / \\\n")
 		fmt.Printf("%-40s%s", "", "__|__ \n")
 		Status = "defaite"
+		afficherTexteSoundFaux(". . .")
+		stopSound()
 	} else {
 		Status = "victoire"
 		fmt.Println()
