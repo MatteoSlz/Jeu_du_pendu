@@ -13,6 +13,7 @@ import (
 )
 
 const (
+	BleuCiel256 = "\033[38;5;117m"
 	Orange  = "\033[38;5;208m"
 	Reset   = "\033[0m"
 	Black   = "\033[30m"
@@ -23,7 +24,12 @@ const (
 	Magenta = "\033[35m"
 	Cyan    = "\033[36m"
 	White   = "\033[37m"
+	Brown   = "\033[38;5;94m"
+	LightGray= "\033[37m"
+    Gray = "\033[90m"  
+	Turquoise = "\033[38;5;43m"
 )
+var couleur = BleuCiel256
 
 type mots struct {
 	Lettre        string `json:"lettre"`
@@ -31,11 +37,11 @@ type mots struct {
 }
 
 type Sauvegarde struct {
-	Pseudo    string `json:"pseudo"`
-	Mot       string `json:"mot"`
-	Lettres   []mots `json:"lettres"`
-	Essais    int    `json:"essais"`
-	Alphabets []mots `json:"alphabet"`
+	Pseudo         string `json:"pseudo"`
+	Mot            string `json:"mot"`
+	Lettres        []mots `json:"lettres"`
+	Essais         int    `json:"essais"`
+	Alphabets      []mots `json:"alphabet"`
 	Difficultesave string `json:difficulte`
 }
 
@@ -126,7 +132,7 @@ func Start() string {
 
 	for pseudo_choisis {
 		fmt.Println()
-		afficherTexte50l(Magenta + "Comment vous appelez vous : " + Reset)
+		afficherTexte50l(Gray + "Comment vous appelez vous : " + Reset)
 		fmt.Scan(&nom)
 		for i := 0; i < len(liste_joueurs_json); i++ {
 			if nom == liste_joueurs_json[i].Pseudo {
@@ -165,7 +171,7 @@ func Start() string {
 			}
 		}
 		fmt.Println()
-		afficherTexte50(fmt.Sprintf(Magenta+"D'accord bienvenue %s !"+Reset, nom))
+		afficherTexte50(fmt.Sprintf(Gray+"D'accord bienvenue %s !"+Reset, nom))
 		pseudo_choisis = false
 	}
 	return nom
@@ -210,11 +216,11 @@ func jouer() {
 			longueur_mot--
 		}
 	}
-	afficherTexte50(Blue + "Bonne chance !" + Reset)
+	afficherTexte50(couleur + "Bonne chance !" + Reset)
 	fmt.Println()
-	afficherTexte50(fmt.Sprintf(Blue +"Votre mot à trouver contient" + Reset + Red +" %d "+ Reset + Blue + "lettres. "+Reset, longueur_mot))
+	afficherTexte50(fmt.Sprintf(couleur+"Votre mot à trouver contient"+Reset+Red+" %d "+Reset+couleur+"lettres. "+Reset, longueur_mot))
 	fmt.Println()
-	afficherTexte50(Blue + "À toi de jouer !" + Reset)
+	afficherTexte50(couleur + "À toi de jouer !" + Reset)
 	index_lettre_donnee_debut := rand.IntN(len(mot_a_trouver))
 	lettre_donnee_debut := tableau_mot[index_lettre_donnee_debut].Lettre
 	for i := 0; i < len(tableau_mot); i++ {
@@ -242,9 +248,9 @@ func jouer() {
 		fmt.Println()
 		for i := 0; i < len(mot_a_trouver); i++ {
 			if tableau_mot[i].Lettre_trouve {
-				afficherTexte50l(fmt.Sprintf(Green+"%s "+Reset, tableau_mot[i].Lettre))
+				afficherTexte50l(fmt.Sprintf("%s ", tableau_mot[i].Lettre))
 			} else if tableau_mot[i].Lettre == "-" {
-				afficherTexte50l(Blue + "- " + Reset)
+				afficherTexte50l(couleur + "- " + Reset)
 				tableau_mot[i].Lettre_trouve = true
 
 			} else {
@@ -254,7 +260,7 @@ func jouer() {
 
 		afficherTexte50l(fmt.Sprintf(Yellow+"\tIl vous reste %d essai(s)"+Reset, Essais_restant))
 		fmt.Println()
-		afficherTexte50l(Blue + "Lettres proposées : " + Reset)
+		afficherTexte50l(couleur + "Lettres proposées : " + Reset)
 		for i := 0; i < len(alphabet); i++ {
 			if alphabet[i].Lettre_trouve == true {
 				dansLeMot := false
@@ -273,7 +279,7 @@ func jouer() {
 		}
 		fmt.Println()
 		fmt.Println()
-		afficherTexte50l(Blue + "Que voulez-vous proposer : " + Reset)
+		afficherTexte50l(couleur + "Que voulez-vous proposer : " + Reset)
 		var action string
 		fmt.Scan(&action)
 		action = strings.ToLower(action)
@@ -311,7 +317,7 @@ func jouer() {
 				}
 			} else {
 				fmt.Println()
-				afficherTexte50l(fmt.Sprintf(Orange +"La lettre : %s a déjà été proposé."+ Reset, action))
+				afficherTexte50l(fmt.Sprintf(Orange+"La lettre : %s a déjà été proposé."+Reset, action))
 				fmt.Println()
 			}
 
@@ -320,22 +326,22 @@ func jouer() {
 				defaite = false
 			} else {
 				fmt.Println()
-				afficherTexte50(Yellow + "Il ne vous reste pas assez d'essais pour effectuer cette action."+ Reset)
+				afficherTexte50(Yellow + "Il ne vous reste pas assez d'essais pour effectuer cette action." + Reset)
 				continue
 			}
 		case "!save":
 			fmt.Println()
-			afficherTexte250(Cyan +"Sauvegarde en cours . . . . . . . . . . ."+ Reset)
+			afficherTexte250(Cyan + "Sauvegarde en cours . . . . . . . . . . ." + Reset)
 			fmt.Println()
-			afficherTexte50(Cyan +"Sauvegarde terminée. Nous avons hâte de vous revoir!"+ Reset)
+			afficherTexte50(Cyan + "Sauvegarde terminée. Nous avons hâte de vous revoir!" + Reset)
 			fmt.Println()
 
 			player := Sauvegarde{
-				Pseudo:    s,
-				Mot:       mot_a_trouver,
-				Lettres:   tableau_mot,
-				Essais:    Essais_restant,
-				Alphabets: alphabet,
+				Pseudo:         s,
+				Mot:            mot_a_trouver,
+				Lettres:        tableau_mot,
+				Essais:         Essais_restant,
+				Alphabets:      alphabet,
 				Difficultesave: Difficulte,
 			}
 
@@ -406,7 +412,7 @@ func jouer() {
 	}
 
 	if perdu {
-		afficherTexte50l(fmt.Sprintf(Red+"Défaite, vous n'avez plus d'essais restants! Le mot à trouver était : " + Reset + Blue + "%s\n"+Reset, mot_a_trouver))
+		afficherTexte50l(fmt.Sprintf(Red+"Défaite, vous n'avez plus d'essais restants! Le mot à trouver était : "+Reset+couleur+"%s\n"+Reset, mot_a_trouver))
 		fmt.Println()
 		Status = "defaite"
 	} else {

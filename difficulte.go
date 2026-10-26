@@ -9,8 +9,8 @@ import (
 func ChoixDifficulte() string {
 	difficulteChoix := true
 	for difficulteChoix {
-		afficherTexte50(Magenta + "Quelle difficulté voulez-vous choisir ? ("+ Reset + Green + "Facile" + Reset + Magenta + "/" + Reset + Yellow +"Normal" + Reset + Magenta + "/" + Reset + Orange + "Difficile"+ Reset + Magenta + "/" + Reset + Red +"Hardcore"+ Reset + Magenta + ")" + Reset)
-		afficherTexte50l(Magenta +": " + Reset)
+		afficherTexte50(Gray + "Quelle difficulté voulez-vous choisir ? ("+ Reset + Green + "Facile" + Reset + Magenta + "/" + Reset + Yellow +"Normal" + Reset + Magenta + "/" + Reset + Orange + "Difficile"+ Reset + Magenta + "/" + Reset + Red +"Hardcore"+ Reset + Magenta + ")" + Reset)
+		afficherTexte50l(Gray +": " + Reset)
 		fmt.Scan(&Difficulte)
 		Difficulte = strings.ToLower(Difficulte)
 		switch Difficulte {

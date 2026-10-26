@@ -42,7 +42,16 @@ func classementScore(pseudo string, difficulte string, essais string) []classeme
 	}
 
 	for i := 0; i < 5; i++ {
-		if player.difficulteValeur > tableau[i].difficulteValeur || (player.difficulteValeur == tableau[i].difficulteValeur && player.Essais > tableau[i].Essais) {
+		placeEstMoinsBonne := tableau[i].difficulteValeur == 0 || tableau[i].Essais == 0
+		joueurEstMeilleur := player.difficulteValeur > tableau[i].difficulteValeur || (player.difficulteValeur == tableau[i].difficulteValeur && player.Essais > tableau[i].Essais)
+
+		if player.Essais > 0 && (placeEstMoinsBonne || joueurEstMeilleur) {
+			for j := 4; j > i; j-- {
+				tableau[j] = tableau[j-1]
+			}
+			tableau[i] = player
+			break
+		} else if player.Essais == 0 && tableau[i].difficulteValeur == 0 {
 			for j := 4; j > i; j-- {
 				tableau[j] = tableau[j-1]
 			}
@@ -106,7 +115,7 @@ func score() {
 			fmt.Println()
 			formatEntete := "%-14s %-14s %-12s %-8s\n"
 			formatLigne2 := "%-14s %-14s %-12s %-8d\n"
-			
+
 			fmt.Printf(formatEntete, "Classement", "PSEUDO", "DIFFICULTE", "ESSAIS")
 			fmt.Println("")
 			fmt.Printf(formatLigne2, "#1", tableau[0].Pseudo, tableau[0].difficulte, tableau[0].Essais)

@@ -106,7 +106,7 @@ func reprendre() {
 			if tableau_mot[i].Lettre_trouve {
 				afficherTexte50l(fmt.Sprintf(Green +"%s "+ Reset, tableau_mot[i].Lettre))
 			} else if tableau_mot[i].Lettre == "-" {
-				afficherTexte50l(Blue +"- " + Reset)
+				afficherTexte50l(couleur +"- " + Reset)
 				tableau_mot[i].Lettre_trouve = true
 
 			} else {
@@ -116,7 +116,7 @@ func reprendre() {
 
 		afficherTexte50l(fmt.Sprintf(Yellow+"\tIl vous reste %d essai(s)"+Reset, Essais_restant))
 		fmt.Println()
-		afficherTexte50l(Blue + "Lettres proposées : " + Reset)
+		afficherTexte50l(couleur + "Lettres proposées : " + Reset)
 		for i := 0; i < len(alphabet); i++ {
 			if alphabet[i].Lettre_trouve == true {
 				dansLeMot := false
@@ -135,7 +135,7 @@ func reprendre() {
 		}
 		fmt.Println()
 		fmt.Println()
-		afficherTexte50l(Blue +"Que voulez-vous proposer : "+ Reset)
+		afficherTexte50l(couleur+"Que voulez-vous proposer : "+ Reset)
 		var action string
 		fmt.Scan(&action)
 		action = strings.ToLower(action)
@@ -247,7 +247,7 @@ func reprendre() {
 	}
 
 	if perdu {
-		afficherTexte50l(fmt.Sprintf(Red+"Défaite, vous n'avez plus d'essais restants! Le mot à trouver était : " + Reset + Blue + "%s\n"+Reset, mot_a_trouver))
+		afficherTexte50l(fmt.Sprintf(Red+"Défaite, vous n'avez plus d'essais restants! Le mot à trouver était : " + Reset + couleur+ "%s\n"+Reset, mot_a_trouver))
 		Status = "defaite"
 	} else {
 		Status = "victoire"
