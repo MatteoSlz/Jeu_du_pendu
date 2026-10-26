@@ -88,6 +88,20 @@ func afficherTexte50l(texte string) {
 		time.Sleep(5 * time.Millisecond)
 	}
 }
+
+func afficherTexteSoundValide(texte string) {
+	for _, caractere := range texte {
+		fmt.Print(string(caractere))
+		time.Sleep(1000 * time.Millisecond)
+	}
+}
+func afficherTexteSoundFaux(texte string) {
+	for _, caractere := range texte {
+		fmt.Print(string(caractere))
+		time.Sleep(600 * time.Millisecond)
+	}
+}
+
 func afficherTexte50(texte string) {
 	for _, caractere := range texte {
 		fmt.Print(string(caractere))
@@ -236,6 +250,7 @@ func jouer() {
 	}
 
 	for defaite {
+		stopSound()
 		count_bonne_lettre = 0
 		for i := 0; i < len(mot_a_trouver); i++ {
 			if tableau_mot[i].Lettre_trouve {
@@ -350,15 +365,19 @@ func jouer() {
 					}
 				}
 				if lettre_trouvee {
+					PlaySoundValidation()
 					fmt.Println()
 					afficherTexte50l(fmt.Sprintf(Green+"Bravo ! Vous avez trouvé la lettre : %s.\n"+Reset, action))
 					oui = true
+					afficherTexteSoundValide("  ")
 				} else {
+					PlaySoundFaux()
 					fmt.Println()
 					afficherTexte50l(fmt.Sprintf(Red+"Dommage la lettre '%s' n'est pas dans le mot."+Reset, action))
 					fmt.Println()
 					oui = false
 					Essais_restant--
+					afficherTexteSoundFaux(" ")
 				}
 			} else {
 				fmt.Println()
@@ -457,6 +476,7 @@ func jouer() {
 	}
 
 	if perdu {
+		PlaySoundLooseMario()
 		afficherTexte50l(fmt.Sprintf(Red+"Défaite, vous n'avez plus d'essais restants! Le mot à trouver était : "+Reset+couleur+"%s\n"+Reset, mot_a_trouver))
 		fmt.Println()
 		fmt.Printf("%-40s%s", "", "  _______\n")
@@ -466,6 +486,8 @@ func jouer() {
 		fmt.Printf("%-40s%s", "", "  |   / \\\n")
 		fmt.Printf("%-40s%s", "", "__|__ \n")
 		Status = "defaite"
+		afficherTexteSoundValide(". . .")
+		stopSound()
 	} else {
 		Status = "victoire"
 		fmt.Println()
