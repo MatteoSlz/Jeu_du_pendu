@@ -486,7 +486,7 @@ func jouer() {
 		fmt.Printf("%-40s%s", "", "  |   / \\\n")
 		fmt.Printf("%-40s%s", "", "__|__ \n")
 		Status = "defaite"
-		afficherTexteSoundValide(". . .")
+		afficherTexteSoundValide(". . . ")
 		stopSound()
 	} else {
 		Status = "victoire"

@@ -83,13 +83,13 @@ func playMusic(path string, loop bool) {
 }
 
 func PlaySoundLooseMario() {
-	playMusic("LooseMario.mp3", true)
+	playMusic("audio/LooseMario.mp3", true)
 }
 
 func PlaySoundFaux() {
-	playMusic("Faux.mp3", true)
+	playMusic("audio/Faux.mp3", true)
 }
 
 func PlaySoundValidation() {
-	playMusic("Validation.mp3", true)
+	playMusic("audio/Validation.mp3", true)
 }
