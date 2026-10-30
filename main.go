@@ -1,34 +1,24 @@
 package main
 
 import (
-	"fmt"
 	"os"
 )
 
-func  Start() {
-	var nom string
-	fmt.Println()
-	fmt.Println("Comment vous appelez vous ?")
-	fmt.Scan(&nom)
-	fmt.Printf("D'accord bienvenue %s !", nom)
-	fmt.Println()
-}
-
 func main() {
-	ecrire()
-	Start()
 
-	if (len(os.Args) != 2) {
-		fmt.Println("Veuillez entrer une commande valide : jouer / reprendre / score")
-		return 
+	if len(os.Args) != 2 {
+		afficherTexte50("Veuillez entrer une commande valide : jouer / reprendre / score")
+		return
 	}
 	choix := os.Args[1]
 	switch choix {
 	case "jouer":
 		jouer()
+	case "reprendre":
+		reprendre()
+	case "score":
+		score()
 	default:
-		fmt.Println("Erreur")
+		afficherTexte50("Choix invalide, veuillez choisir entre jouer/reprendre/score ")
 	}
 }
-
-
