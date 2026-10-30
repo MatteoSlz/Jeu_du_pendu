@@ -11,6 +11,8 @@ import (
 	"time"
 )
 
+var DifficulteReprendre string
+
 func reprendre() {
 
 	var liste_joueurs_json []Sauvegarde
@@ -36,7 +38,7 @@ func reprendre() {
 		}
 	}
 	if len(liste_joueurs_json) == 0 {
-		afficherTexte50("Aucune partie sauvegardée trouvée.")
+		afficherTexte50(Orange + "Aucune partie sauvegardée trouvée." + Reset)
 		os.Exit(0)
 	}
 	var nom string
@@ -45,13 +47,13 @@ func reprendre() {
 
 	for choix_joueurs {
 		fmt.Println()
-		afficherTexte50l("Quel partie souhaite-tu reprendre ? ")
+		afficherTexte50l(Magenta + "Quel partie souhaite-tu reprendre ? " + Reset)
 		for i := 0; i < len(liste_joueurs_json); i++ {
 			fmt.Println()
-			afficherTexte50l(fmt.Sprintf("%s", liste_joueurs_json[i].Pseudo))
+			afficherTexte50l(fmt.Sprintf(Orange+"%s"+Reset, liste_joueurs_json[i].Pseudo))
 		}
 		fmt.Println()
-		afficherTexte50l(": ")
+		afficherTexte50l(Magenta + ": " + Reset)
 		fmt.Scan(&nom)
 		for j := 0; j < len(liste_joueurs_json); j++ {
 			if nom == liste_joueurs_json[j].Pseudo {
@@ -63,7 +65,7 @@ func reprendre() {
 		if numero_joueur == -1 {
 			fmt.Println()
 			fmt.Println()
-			afficherTexte50("Ce pseudo n'existe pas. Veuillez saisir un pseudo valide.")
+			afficherTexte50(Red + "Ce pseudo n'existe pas. Veuillez saisir un pseudo valide." + Reset)
 		}
 	}
 
@@ -77,9 +79,10 @@ func reprendre() {
 
 	if numero_joueur < len(liste_joueurs_json) {
 		fmt.Println()
-		afficherTexte50l(fmt.Sprintf("D'accord re bonjour %s !", liste_joueurs_json[numero_joueur].Pseudo))
+		afficherTexte50l(fmt.Sprintf(Magenta+"D'accord re bonjour %s !"+Reset, liste_joueurs_json[numero_joueur].Pseudo))
 		fmt.Println()
 
+		DifficulteReprendre = liste_joueurs_json[numero_joueur].Difficultesave
 		Essais_restant = liste_joueurs_json[numero_joueur].Essais
 		mot_a_trouver = liste_joueurs_json[numero_joueur].Mot
 		tableau_mot = liste_joueurs_json[numero_joueur].Lettres
@@ -88,6 +91,7 @@ func reprendre() {
 	}
 
 	for defaite {
+		stopSound()
 		count_bonne_lettre = 0
 		for i := 0; i < len(mot_a_trouver); i++ {
 			if tableau_mot[i].Lettre_trouve {
@@ -101,9 +105,9 @@ func reprendre() {
 		fmt.Println()
 		for i := 0; i < len(mot_a_trouver); i++ {
 			if tableau_mot[i].Lettre_trouve {
-				afficherTexte50l(fmt.Sprintf("%s ", tableau_mot[i].Lettre))
+				afficherTexte50l(fmt.Sprintf(Green+"%s "+Reset, tableau_mot[i].Lettre))
 			} else if tableau_mot[i].Lettre == "-" {
-				afficherTexte50l("- ")
+				afficherTexte50l(couleur + "- " + Reset)
 				tableau_mot[i].Lettre_trouve = true
 
 			} else {
@@ -111,17 +115,72 @@ func reprendre() {
 			}
 		}
 
-		afficherTexte50l(fmt.Sprintf("\tIl vous reste %d essai(s)", Essais_restant))
+		afficherTexte50l(fmt.Sprintf(Yellow+"\tIl vous reste %d essai(s)"+Reset, Essais_restant))
 		fmt.Println()
-		afficherTexte50l("Lettres proposées : ")
+
+if Essais_restant == 5 {
+			fmt.Printf("%-40s%s", "", "\n")
+			fmt.Printf("%-40s%s", "", "\n")
+			fmt.Printf("%-40s%s", "", "\n")
+			fmt.Printf("%-40s%s", "", "\n")
+			fmt.Printf("%-40s%s", "", "\n")
+			fmt.Printf("%-40s%s", "", "__|__ \n")
+		}
+		if Essais_restant == 4 {
+			fmt.Printf("%-40s%s", "", "      \n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "__|__ \n")
+		}
+		if Essais_restant == 3 {
+			fmt.Printf("%-40s%s", "", "  _______\n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "__|__ \n")
+		}
+		if Essais_restant == 2 {
+			fmt.Printf("%-40s%s", "", "  _______\n")
+			fmt.Printf("%-40s%s", "", "  |/   \n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "__|__ \n")
+		}
+		if Essais_restant == 1 {
+			fmt.Printf("%-40s%s", "", "  _______\n")
+			fmt.Printf("%-40s%s", "", "  |/   |\n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "  |   \n")
+			fmt.Printf("%-40s%s", "", "__|__ \n")
+		}
+		fmt.Println()
+
+
+		afficherTexte50l(couleur + "Lettres proposées : " + Reset)
 		for i := 0; i < len(alphabet); i++ {
 			if alphabet[i].Lettre_trouve == true {
-				afficherTexte50l(fmt.Sprintf("%s ", alphabet[i].Lettre))
+				dansLeMot := false
+				for j := 0; j < len(tableau_mot); j++ {
+					if alphabet[i].Lettre == tableau_mot[j].Lettre {
+						dansLeMot = true
+						break
+					}
+				}
+				if dansLeMot {
+					afficherTexte50l(fmt.Sprintf(Green+"%s "+Reset, alphabet[i].Lettre))
+				} else {
+					afficherTexte50l(fmt.Sprintf(Red+"%s "+Reset, alphabet[i].Lettre))
+				}
 			}
 		}
 		fmt.Println()
 		fmt.Println()
-		afficherTexte50l("Que voulez-vous proposer : ")
+		afficherTexte50l(couleur + "Que voulez-vous proposer : " + Reset)
 		var action string
 		fmt.Scan(&action)
 		action = strings.ToLower(action)
@@ -147,16 +206,23 @@ func reprendre() {
 					}
 				}
 				if lettre_trouvee {
-					afficherTexte50l(fmt.Sprintf("Bravo ! Vous avez trouvé la lettre : %s.\n", action))
+					PlaySoundValidation()
+					fmt.Println()
+					afficherTexte50l(fmt.Sprintf(Green+"Bravo ! Vous avez trouvé la lettre : %s.\n"+Reset, action))
+					oui = true
+					afficherTexteSoundValide("  ")
 				} else {
+					PlaySoundFaux()
 					fmt.Println()
-					afficherTexte50l(fmt.Sprintf("Dommage la lettre '%s' n'est pas dans le mot.", action))
+					afficherTexte50l(fmt.Sprintf(Red+"Dommage la lettre '%s' n'est pas dans le mot."+Reset, action))
 					fmt.Println()
+					oui = false
 					Essais_restant--
+					afficherTexteSoundFaux(" ")
 				}
 			} else {
 				fmt.Println()
-				afficherTexte50l(fmt.Sprintf("La lettre : %s a déjà été proposé.", action))
+				afficherTexte50l(fmt.Sprintf(Orange+"La lettre : %s a déjà été proposé."+Reset, action))
 				fmt.Println()
 			}
 
@@ -165,23 +231,24 @@ func reprendre() {
 				defaite = false
 			} else {
 				fmt.Println()
-				afficherTexte50("Il ne vous reste pas assez d'essais pour effectuer cette action.")
+				afficherTexte50(Yellow + "Il ne vous reste pas assez d'essais pour effectuer cette action." + Reset)
 				continue
 			}
 		case "!save":
 
 			fmt.Println()
-			afficherTexte250("Sauvegarde en cours . . . . . . . . . . .")
+			afficherTexte250(Cyan + "Sauvegarde en cours . . . . . . . . . . ." + Reset)
 			fmt.Println()
-			afficherTexte50("Sauvegarde terminée. Nous avons hâte de vous revoir!")
+			afficherTexte50(Cyan + "Sauvegarde terminée. Nous avons hâte de vous revoir!" + Reset)
 			fmt.Println()
 
 			player := Sauvegarde{
-				Pseudo:    s,
-				Mot:       mot_a_trouver,
-				Lettres:   tableau_mot,
-				Essais:    Essais_restant,
-				Alphabets: alphabet,
+				Pseudo:         s,
+				Mot:            mot_a_trouver,
+				Lettres:        tableau_mot,
+				Essais:         Essais_restant,
+				Alphabets:      alphabet,
+				Difficultesave: DifficulteReprendre,
 			}
 
 			liste_joueurs_json[numero_joueur] = player
@@ -208,19 +275,19 @@ func reprendre() {
 				}
 				if valeur == len(action) {
 					fmt.Println()
-					afficherTexte50("Le mot n'est pas bon, vous perdez 2 essais.")
+					afficherTexte50(Red + "Le mot n'est pas bon, vous perdez 2 essais." + Reset)
 					fmt.Println()
 					Essais_restant -= 2
 				}
 
 			} else if (len(mot_a_trouver) == len(action)) && (Essais_restant < 2) {
 				fmt.Println()
-				afficherTexte50("Il ne vous reste pas assez d'essais pour effectuer cette action.")
+				afficherTexte50(Yellow + "Il ne vous reste pas assez d'essais pour effectuer cette action." + Yellow)
 				fmt.Println()
 				continue
 			} else {
 				fmt.Println()
-				afficherTexte50("Entrée invalide, veuillez proposer une seule lettre ou un mot de la bonne longueur.")
+				afficherTexte50(Red + "Entrée invalide, veuillez proposer une seule lettre ou un mot de la bonne longueur." + Reset)
 				fmt.Println()
 				continue
 			}
@@ -232,12 +299,22 @@ func reprendre() {
 	}
 
 	if perdu {
-		afficherTexte50l(fmt.Sprintf("Dommage c'est perdu. Le mot à trouver était : %s\n", mot_a_trouver))
+		PlaySoundLooseMario()
+		afficherTexte50l(fmt.Sprintf(Red+"Défaite, vous n'avez plus d'essais restants! Le mot à trouver était : "+Reset+couleur+"%s\n"+Reset, mot_a_trouver))
+		fmt.Println()
+		fmt.Printf("%-40s%s", "", "  _______\n")
+		fmt.Printf("%-40s%s", "", "  |/   |\n")
+		fmt.Printf("%-40s%s", "", "  |    O\n")
+		fmt.Printf("%-40s%s", "", "  |   /|\\\n")
+		fmt.Printf("%-40s%s", "", "  |   / \\\n")
+		fmt.Printf("%-40s%s", "", "__|__ \n")
 		Status = "defaite"
+		afficherTexteSoundFaux(". . .")
+		stopSound()
 	} else {
 		Status = "victoire"
 		fmt.Println()
-		afficherTexte50l(fmt.Sprintf("Bravo! Le mot à trouver était bien : %s\n", mot_a_trouver))
+		afficherTexte50l(fmt.Sprintf(Green+"Bravo! Le mot à trouver était bien : %s\n"+Reset, mot_a_trouver))
 		fmt.Println()
 	}
 
@@ -247,7 +324,6 @@ func reprendre() {
 			alphabet_string = alphabet_string + alphabet[i].Lettre
 		}
 	}
-
 	data2, Err2 := os.ReadFile("src/save.json")
 	if Err2 != nil {
 		if errors.Is(Err2, os.ErrNotExist) {
@@ -290,9 +366,9 @@ func reprendre() {
 		os.WriteFile("src/save.json", data2, 0644)
 	}
 
-	data_csv, Err_CSV := os.OpenFile("src/score.csv", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if Err_CSV != nil {
-		fmt.Printf("Erreur : %v", Err_CSV)
+	data_csv, Err2_CSV := os.OpenFile("src/score.csv", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if Err2_CSV != nil {
+		fmt.Printf("Erreur : %v", Err2_CSV)
 		fmt.Println()
 		os.Exit(0)
 	}
@@ -303,11 +379,10 @@ func reprendre() {
 
 	date := time.Now().Format("2006-01-02 15:04")
 	Essais_affiche := strconv.Itoa(Essais_restant)
-
-	nouvelle_data := []string{nom, Status, Essais_affiche, mot_a_trouver, alphabet_string, date}
+	nouvelle_data := []string{nom, Status, Essais_affiche, DifficulteReprendre, mot_a_trouver, alphabet_string, date}
 
 	erreur := texte.Write(nouvelle_data)
 	if erreur != nil {
-		fmt.Printf("%v", erreur)
+		fmt.Printf("Erreur : %v\n", erreur)
 	}
 }
